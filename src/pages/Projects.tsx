@@ -51,16 +51,16 @@ export function Projects() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
-          className="w-full h-[60vh] md:h-[70vh] relative z-10 cursor-grab active:cursor-grabbing"
+          className="w-full h-[60vh] md:h-[70vh] relative z-10 cursor-grab active:cursor-grabbing touch-pan-y"
         >
-          <Canvas camera={{ position: [0, 2, 6], fov: 45 }}>
+          <Canvas style={{ touchAction: 'pan-y' }} camera={{ position: [0, 2, 6], fov: 45 }}>
             <ambientLight intensity={2} />
             <directionalLight position={[10, 10, 5]} intensity={3} />
             <directionalLight position={[-10, -10, -5]} intensity={1} />
             <spotLight position={[0, 10, 0]} intensity={3} penumbra={1} />
             
             <Suspense fallback={<Html center><div className="text-white text-xl tracking-widest uppercase animate-pulse w-max whitespace-nowrap bg-black/50 p-4 rounded-xl border border-white/10 backdrop-blur-md">Loading Ferrari...</div></Html>}>
-              <OrbitControls enableZoom={false} enablePan={false} />
+              <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} />
               <Bounds fit clip observe margin={0.5}>
                 <Center>
                   <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>

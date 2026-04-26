@@ -135,19 +135,19 @@ export function Home() {
         </video>
         
         {/* Navigation Bar */}
-        <nav className="relative z-10 flex flex-row justify-between items-center px-8 py-6 max-w-7xl mx-auto">
-          <div className="text-3xl tracking-tight text-foreground" style={{ fontFamily: "'Instrument Serif', serif" }}>
+        <nav className="relative z-10 flex flex-row justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
+          <div className="text-2xl md:text-3xl tracking-tight text-foreground" style={{ fontFamily: "'Instrument Serif', serif" }}>
             Agam<sup className="text-xs">*</sup>
           </div>
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#" className="text-sm transition-colors text-foreground">
+          <div className="flex items-center gap-4 md:gap-8">
+            <a href="#" className="text-xs md:text-sm transition-colors text-foreground">
               About
             </a>
-            <a href="/connect" className="text-sm transition-colors text-muted-foreground hover:text-foreground">
+            <a href="/connect" className="text-xs md:text-sm transition-colors text-muted-foreground hover:text-foreground">
               Contact
             </a>
           </div>
-          <Link to="/journey" className="liquid-glass rounded-full px-6 py-2.5 text-sm text-foreground hover:scale-[1.03] transition-transform inline-flex items-center">
+          <Link to="/journey" className="liquid-glass rounded-full px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm text-foreground hover:scale-[1.03] transition-transform hidden sm:inline-flex items-center">
             My Journey
           </Link>
         </nav>
