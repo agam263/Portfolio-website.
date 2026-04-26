@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Canvas } from '@react-three/fiber';
-import { Float, Center, Bounds, Html } from '@react-three/drei';
+import { Float, Center, Bounds, Html, OrbitControls } from '@react-three/drei';
 import { Suspense } from 'react';
 import { ProjectModel } from '../components/ProjectModel';
 
@@ -51,7 +51,7 @@ export function Projects() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
-          className="w-full h-[60vh] md:h-[70vh] relative z-10 pointer-events-none"
+          className="w-full h-[60vh] md:h-[70vh] relative z-10 cursor-grab active:cursor-grabbing"
         >
           <Canvas camera={{ position: [0, 2, 6], fov: 45 }}>
             <ambientLight intensity={2} />
@@ -60,6 +60,7 @@ export function Projects() {
             <spotLight position={[0, 10, 0]} intensity={3} penumbra={1} />
             
             <Suspense fallback={<Html center><div className="text-white text-xl tracking-widest uppercase animate-pulse w-max whitespace-nowrap bg-black/50 p-4 rounded-xl border border-white/10 backdrop-blur-md">Loading Ferrari...</div></Html>}>
+              <OrbitControls enableZoom={false} enablePan={false} />
               <Bounds fit clip observe margin={0.5}>
                 <Center>
                   <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
