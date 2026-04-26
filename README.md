@@ -33,8 +33,12 @@ A high-performance, ultra-modern portfolio website built with React, Vite, Frame
 *A sleek, minimal timeline charting the progression of my career and skills.*
 
 ### 📚 Stacked Project Cards
-![Projects View](./public/screenshots/projects.png)
+![Stacked View](./public/screenshots/stacked.png)
 *A high-end, scroll-controlled stacked deck animation highlighting my recent work.*
+
+### 🏎️ 3D Project Experiences
+![Projects View](./public/screenshots/projects.png)
+*Interactive 3D environments like the Ferrari model integrated directly into the DOM.*
 
 ### 📬 Connect
 ![Connect View](./public/screenshots/connect.png)
