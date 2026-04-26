@@ -24,15 +24,21 @@ A high-performance, ultra-modern portfolio website built with React, Vite, Frame
 
 ## 📸 Project Screenshots
 
-> **Tip:** You can replace these images with actual full-page screenshots of your website! Just add the screenshots to your `/public` folder and update the links below.
-
 ### 🏠 Immersive Hero Section
-![Hero Section](./public/spaceman.png)
-*Featuring smooth typing animations, glowing highlights, and a floating 3D spaceman background.*
+![Hero Section](./public/screenshots/home.png)
+*Featuring a customized Apple-style scrolling layout and interactive elements.*
+
+### 🚀 My Journey
+![Journey Section](./public/screenshots/journey.png)
+*A sleek, minimal timeline charting the progression of my career and skills.*
 
 ### 📚 Stacked Project Cards
-![Projects View](./src/assets/hero.png)
-*A high-end, scroll-controlled stacked deck animation that reveals sections sequentially as the user scrolls.*
+![Projects View](./public/screenshots/projects.png)
+*A high-end, scroll-controlled stacked deck animation highlighting my recent work.*
+
+### 📬 Connect
+![Connect View](./public/screenshots/connect.png)
+*A dedicated contact portal powered by modern 3D integrations.*
 
 ## 💻 Running Locally
 
