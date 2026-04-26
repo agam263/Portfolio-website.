@@ -1,73 +1,63 @@
-# React + TypeScript + Vite
+# 🚀 Agam Kundu | Premium 3D Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-performance, ultra-modern portfolio website built with React, Vite, Framer Motion, and Three.js. This portfolio showcases a deep focus on interactive 3D elements, buttery-smooth scroll animations, and premium minimalist aesthetics.
 
-Currently, two official plugins are available:
+![Portfolio Banner](./public/spaceman_rope.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Key Features
 
-## React Compiler
+- **Interactive 3D Environments:** Integrated `react-three-fiber` and `three.js` to render high-quality GLTF/GLB models (like the floating spaceman and interactive project vehicles) directly in the browser.
+- **Cinematic Animations:** Powered by `framer-motion`, featuring Apple-style stacked scroll animations, staggered text reveals, and fluid page transitions.
+- **Minimalist "Liquid Glass" UI:** Custom dark-mode styling utilizing glassmorphism, glowing micro-interactions, and premium typographic choices.
+- **Performance Optimized:** Built with Vite for lightning-fast HMR and optimized production bundling.
+- **Seamless SPA Routing:** Global `react-router-dom` configuration with auto-scroll-to-top routing logic and configured Vercel rewrites for robust production deployment.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **Frontend Framework:** React 18
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS + Vanilla CSS
+- **Animations:** Framer Motion
+- **3D Rendering:** Three.js, React Three Fiber, React Three Drei
+- **Routing:** React Router DOM
+- **Deployment:** Vercel
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📸 Project Screenshots
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+> **Tip:** You can replace these images with actual full-page screenshots of your website! Just add the screenshots to your `/public` folder and update the links below.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 🏠 Immersive Hero Section
+![Hero Section](./public/spaceman.png)
+*Featuring smooth typing animations, glowing highlights, and a floating 3D spaceman background.*
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 📚 Stacked Project Cards
+![Projects View](./src/assets/hero.png)
+*A high-end, scroll-controlled stacked deck animation that reveals sections sequentially as the user scrolls.*
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 💻 Running Locally
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+To run this project on your local machine:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/agam263/Portfolio-website.git
+   cd Portfolio-website
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+## 🌐 Deployment
+
+This project is optimized for deployment on Vercel. A `vercel.json` file is included in the root directory to handle SPA client-side routing rewrites, preventing 404 errors on page refresh.
+
+## 👨‍💻 About the Developer
+
+Built by **Agam Kundu** – Undergraduate CS student specializing in AI/ML. Passionate about system design, user experience, and creating impactful digital products. Based in Bangalore, India.
