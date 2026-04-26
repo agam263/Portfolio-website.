@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function Connect() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -18,10 +19,10 @@ export function Connect() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 p-6 bg-black/80 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <a href="/" className="flex items-center gap-2 text-white hover:text-primary transition-colors bg-white/10 px-4 py-2 rounded-full">
+          <Link to="/" className="flex items-center gap-2 text-white hover:text-primary transition-colors bg-white/10 px-4 py-2 rounded-full">
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm font-medium tracking-wide">Back to Home</span>
-          </a>
+          </Link>
           <div className="text-xl tracking-tight text-foreground" style={{ fontFamily: "'Instrument Serif', serif" }}>
             Agam<sup className="text-xs">*</sup>
           </div>

@@ -140,12 +140,12 @@ export function Home() {
             Agam<sup className="text-xs">*</sup>
           </div>
           <div className="flex items-center gap-4 md:gap-8">
-            <a href="#" className="text-xs md:text-sm transition-colors text-foreground">
+            <Link to="#" className="text-xs md:text-sm transition-colors text-foreground">
               About
-            </a>
-            <a href="/connect" className="text-xs md:text-sm transition-colors text-muted-foreground hover:text-foreground">
+            </Link>
+            <Link to="/connect" className="text-xs md:text-sm transition-colors text-muted-foreground hover:text-foreground">
               Contact
-            </a>
+            </Link>
           </div>
           <Link to="/journey" className="liquid-glass rounded-full px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm text-foreground hover:scale-[1.03] transition-transform hidden sm:inline-flex items-center">
             My Journey
