@@ -37,12 +37,13 @@ A high-performance, ultra-modern portfolio website built with React, Vite, Frame
 *A high-end, scroll-controlled stacked deck animation highlighting my recent work.*
 
 ### 🏎️ 3D Project Experiences
-![Connect View](./public/screenshots/connect.png)
+![Projects View](./public/screenshots/projects.png)
+
+
 *Interactive 3D environments like the Ferrari model integrated directly into the DOM.*
 
 ### 📬 Connect
-![Connect View](<img width="1664" height="917" alt="Screenshot 2026-04-26 at 7 11 33 AM" src="https://github.com/user-attachments/assets/c6bef30f-886d-4300-868b-7da08cb02772" />
-)
+![Connect View](./public/screenshots/connect.png)
 *A dedicated contact portal powered by modern 3D integrations.*
 
 ## 💻 Running Locally
