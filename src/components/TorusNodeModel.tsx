@@ -42,6 +42,7 @@ export function TorusNodeModel() {
       {/* Floating Nodes */}
       <points ref={particlesRef}>
         <bufferGeometry>
+          {/* @ts-ignore */}
           <bufferAttribute
             attach="attributes-position"
             count={particlesCount}

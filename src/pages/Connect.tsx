@@ -138,15 +138,10 @@ export function Connect() {
                   <button 
                     type="submit" 
                     disabled={status !== 'idle'}
-                    className={`w-full mt-2 font-medium text-lg rounded-xl px-4 py-4 flex items-center justify-center gap-2 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] ${
-                      status === 'success' 
-                        ? 'bg-emerald-500 text-white shadow-[0_0_30px_rgba(16,185,129,0.4)]'
-                        : 'bg-white text-black hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98]'
-                    } disabled:opacity-80 disabled:cursor-not-allowed`}
+                    className={`w-full mt-2 font-medium text-lg rounded-xl px-4 py-4 flex items-center justify-center gap-2 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] bg-white text-black hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-80 disabled:cursor-not-allowed`}
                   >
                     {status === 'idle' && <><Send className="w-5 h-5" /> Send Message</>}
                     {status === 'submitting' && <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</>}
-                    {status === 'success' && <><CheckCircle2 className="w-5 h-5" /> Message Sent!</>}
                   </button>
                 </div>
               </motion.form>

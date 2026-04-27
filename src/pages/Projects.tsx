@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Canvas } from '@react-three/fiber';
-import { Float, Center, Bounds, Html, OrbitControls } from '@react-three/drei';
+import { Float, Center, Bounds, OrbitControls } from '@react-three/drei';
 import { Suspense } from 'react';
 import { ProjectModel } from '../components/ProjectModel';
 import { GeometricModel } from '../components/GeometricModel';
