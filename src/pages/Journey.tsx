@@ -72,7 +72,7 @@ function MilestoneNode({ milestone, index }: { milestone: any, index: number }) 
           initial={{ opacity: 0, x: isLeft ? -30 : 30, y: 20 }}
           animate={isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: isLeft ? -30 : 30, y: 20 }}
           transition={{ duration: 0.7, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className={`liquid-glass p-6 md:p-8 rounded-2xl border border-white/10 w-full sm:w-[80%] md:w-[40%] ${isLeft ? 'mr-auto md:mr-[15%]' : 'ml-auto md:ml-[15%]'}`}
+          className={`bg-black/80 backdrop-blur-2xl p-6 md:p-8 rounded-2xl border border-white/20 w-full sm:w-[80%] md:w-[40%] shadow-2xl ${isLeft ? 'mr-auto md:mr-[15%]' : 'ml-auto md:ml-[15%]'}`}
         >
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center border border-white/5 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
@@ -83,7 +83,7 @@ function MilestoneNode({ milestone, index }: { milestone: any, index: number }) 
               <h3 className="text-xl md:text-2xl text-foreground font-medium mt-1">{milestone.title}</h3>
             </div>
           </div>
-          <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+          <p className="text-white/80 leading-relaxed text-sm md:text-base mt-2 font-medium">
             {milestone.description}
           </p>
         </motion.div>
@@ -131,7 +131,7 @@ export function Journey() {
           <motion.img 
             src="/spaceman.png" 
             alt="Floating Spaceman" 
-            className="w-[90vw] md:w-[50vw] max-w-2xl object-contain opacity-100 brightness-150 contrast-125 drop-shadow-2xl" 
+            className="w-[90vw] md:w-[50vw] max-w-2xl object-contain opacity-30 drop-shadow-2xl" 
             animate={{ y: [0, -20, 0] }}
             transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
           />
@@ -224,9 +224,9 @@ export function Journey() {
           <h2 className="text-3xl md:text-5xl font-normal mb-8" style={{ fontFamily: "'Instrument Serif', serif" }}>
             Ready to build the future?
           </h2>
-          <a href="mailto:agam.p24@medhaviskillsuniversity.edu.in" className="liquid-glass rounded-full px-10 py-4 text-sm text-foreground hover:scale-[1.05] transition-transform inline-flex items-center">
+          <Link to="/connect" className="liquid-glass rounded-full px-10 py-4 text-sm text-foreground hover:scale-[1.05] transition-transform inline-flex items-center">
             Let's Collaborate
-          </a>
+          </Link>
         </motion.div>
       </footer>
     </div>
