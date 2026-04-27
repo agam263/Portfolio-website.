@@ -10,9 +10,23 @@ export function ProjectModel({ isDrivingMode = false }: { isDrivingMode?: boolea
   const armRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
 
+  const clonedScene = useMemo(() => {
+    const clone = scene.clone();
+    clone.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        if (mesh.material) {
+          // Clone the material to avoid shared state across multiple cards
+          mesh.material = (mesh.material as THREE.Material).clone();
+        }
+      }
+    });
+    return clone;
+  }, [scene]);
+
   // Enhance the Ferrari's paint and get a reference to the lights
   useMemo(() => {
-    scene.traverse((child) => {
+    clonedScene.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
         
@@ -32,7 +46,7 @@ export function ProjectModel({ isDrivingMode = false }: { isDrivingMode?: boolea
         }
       }
     });
-  }, [scene]);
+  }, [clonedScene]);
 
   // Animations: Flashing headlights and Hover Effects
   useFrame((state) => {
@@ -74,7 +88,7 @@ export function ProjectModel({ isDrivingMode = false }: { isDrivingMode?: boolea
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
     >
-      <primitive object={scene} />
+      <primitive object={clonedScene} />
 
       {/* Companion Character Sitting on the Roof (Only visible when driving) */}
       {isDrivingMode && (
