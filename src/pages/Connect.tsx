@@ -33,6 +33,20 @@ export function Connect() {
       {/* Background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-white/5 rounded-full blur-[150px] pointer-events-none" />
 
+      {/* 3D Animated Background Character */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+        <Canvas camera={{ position: [0, 0, 4], fov: 45 }} dpr={[1, 1.5]} gl={{ antialias: false }}>
+          <ambientLight intensity={1.5} />
+          <directionalLight position={[10, 10, 5]} intensity={2} />
+          <directionalLight position={[-10, -10, -5]} intensity={0.5} />
+          <Suspense fallback={null}>
+            <Float speed={2} rotationIntensity={0.2} floatIntensity={1}>
+              <ContactBot />
+            </Float>
+          </Suspense>
+        </Canvas>
+      </div>
+
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 p-6 bg-black/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -62,26 +76,6 @@ export function Connect() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          {/* 3D Animated Character */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-            className="w-full h-[40vh] lg:h-[60vh] relative z-10 bg-white/[0.02] border border-white/10 rounded-[2rem] backdrop-blur-xl shadow-2xl overflow-hidden flex items-center justify-center"
-          >
-            <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-              <ambientLight intensity={1.5} />
-              <directionalLight position={[10, 10, 5]} intensity={2} />
-              <directionalLight position={[-10, -10, -5]} intensity={0.5} />
-              <Suspense fallback={null}>
-                <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 2 + 0.2} minPolarAngle={Math.PI / 2 - 0.2} />
-                <Float speed={2} rotationIntensity={0.2} floatIntensity={1}>
-                  <ContactBot />
-                </Float>
-              </Suspense>
-            </Canvas>
-          </motion.div>
 
           <AnimatePresence mode="wait">
             {status !== 'success' ? (
@@ -176,7 +170,6 @@ export function Connect() {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
       </div>
     </div>
   );
