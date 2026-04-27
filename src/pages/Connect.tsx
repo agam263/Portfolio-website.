@@ -2,7 +2,7 @@ import { ArrowLeft, Mail, User, MessageSquare, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Float } from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import { Suspense, useState } from 'react';
 import { ContactBot } from '../components/ContactBot';
 import { CheckCircle2, Loader2 } from 'lucide-react';
