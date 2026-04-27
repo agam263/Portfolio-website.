@@ -53,7 +53,7 @@ function MilestoneNode({ milestone, index }: { milestone: any, index: number }) 
         initial={{ scale: 0, opacity: 0 }} 
         animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }} 
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)] z-20 animate-pulse"
+        className="absolute left-[28px] md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)] z-20 animate-pulse"
       >
         <div className="absolute inset-0 rounded-full bg-primary/50 animate-ping opacity-75"></div>
       </motion.div>
@@ -63,19 +63,19 @@ function MilestoneNode({ milestone, index }: { milestone: any, index: number }) 
         initial={{ scaleX: 0 }}
         animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
         transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-        className={`absolute top-1/2 h-[2px] bg-gradient-to-r ${isLeft ? 'from-transparent to-primary/80 right-1/2 origin-right' : 'from-primary/80 to-transparent left-1/2 origin-left'} z-10 w-[20%] md:w-[15%] drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]`}
+        className={`absolute top-1/2 h-[2px] bg-gradient-to-r ${isLeft ? 'from-primary/80 to-transparent left-[28px] origin-left md:from-transparent md:to-primary/80 md:right-1/2 md:origin-right md:left-auto' : 'from-primary/80 to-transparent left-[28px] md:left-1/2 origin-left'} z-10 w-[15%] drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]`}
       />
 
       {/* Card Content */}
-      <div className={`flex w-full relative z-30 px-4 md:px-0 ${isLeft ? 'justify-start' : 'justify-end'}`}>
+      <div className={`flex w-full relative z-30 pl-[70px] pr-4 md:px-0 ${isLeft ? 'md:justify-start' : 'md:justify-end'}`}>
         <motion.div 
           initial={{ opacity: 0, x: isLeft ? -30 : 30, y: 20 }}
           animate={isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: isLeft ? -30 : 30, y: 20 }}
           transition={{ duration: 0.7, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className={`bg-black/80 backdrop-blur-2xl p-6 md:p-8 rounded-2xl border border-white/20 w-full sm:w-[80%] md:w-[40%] shadow-2xl ${isLeft ? 'mr-auto md:mr-[15%]' : 'ml-auto md:ml-[15%]'}`}
+          className={`bg-black/80 backdrop-blur-2xl p-6 md:p-8 rounded-2xl border border-white/20 w-full sm:w-[80%] md:w-[40%] shadow-2xl ${isLeft ? 'md:mr-auto md:mr-[15%]' : 'md:ml-auto md:ml-[15%]'}`}
         >
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center border border-white/5 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+            <div className="w-12 h-12 shrink-0 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center border border-white/5 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
               {milestone.icon}
             </div>
             <div>
@@ -201,10 +201,10 @@ export function Journey() {
         <div ref={containerRef} className="relative w-full h-full">
           
           {/* Main Glowing Trunk */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-white/5 -translate-x-1/2 z-0" />
+          <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-[2px] bg-white/5 -translate-x-1/2 z-0" />
           <motion.div 
             style={{ scaleY, transformOrigin: "top" }} 
-            className="absolute left-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-primary/20 via-primary to-primary/20 -translate-x-1/2 drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] z-10" 
+            className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-primary/20 via-primary to-primary/20 -translate-x-1/2 drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] z-10" 
           />
 
           {milestones.map((milestone, index) => (
