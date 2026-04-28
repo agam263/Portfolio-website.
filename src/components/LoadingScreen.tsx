@@ -1,16 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 
-const words = ["Design", "Create", "Inspire"];
+const words = ["Creative Coder", "Software Engineer", "AI Enthusiast", "System Designer", "Agam Kundu"];
 
 export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const [wordIndex, setWordIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const onCompleteRef = useRef(onComplete);
-
-  useEffect(() => {
-    onCompleteRef.current = onComplete;
-  }, [onComplete]);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Handle words cycling
   useEffect(() => {
@@ -20,90 +16,67 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
         clearInterval(wordInterval);
         return prev;
       });
-    }, 900);
+    }, 1200);
 
     return () => clearInterval(wordInterval);
   }, []);
 
-  // Handle progress counter
+  // Attempt Autoplay
   useEffect(() => {
-    const duration = 2700;
-    const startTime = performance.now();
-    let animationFrameId: number;
-
-    const updateProgress = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const newProgress = Math.min((elapsed / duration) * 100, 100);
-      setProgress(newProgress);
-
-      if (newProgress < 100) {
-        animationFrameId = requestAnimationFrame(updateProgress);
-      } else {
-        setTimeout(() => {
-          onCompleteRef.current();
-        }, 400);
-      }
-    };
-
-    animationFrameId = requestAnimationFrame(updateProgress);
-
-    return () => cancelAnimationFrame(animationFrameId);
+    if (videoRef.current) {
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch((e) => {
+        console.log("Autoplay blocked, waiting for user click", e);
+      });
+    }
   }, []);
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] bg-[var(--bg)]"
+      className="fixed inset-0 z-[9999] bg-black cursor-pointer"
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+      onClick={() => {
+        if (!isPlaying && videoRef.current) {
+          videoRef.current.play();
+          setIsPlaying(true);
+        } else {
+          // Allow skipping the intro by clicking
+          onComplete();
+        }
+      }}
     >
-      {/* Element 1: "Portfolio" Label */}
-      <motion.div
-        className="absolute top-8 left-8 md:top-12 md:left-12 text-xs md:text-sm text-[var(--muted)] uppercase tracking-[0.3em]"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-      >
-        Portfolio
-      </motion.div>
+      {/* Video Background */}
+      <video
+        ref={videoRef}
+        src="/screenshots/space.mp4"
+        playsInline
+        onEnded={onComplete}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
 
-      {/* Element 2: Rotating Words */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      {/* Click to Play Overlay (if browser blocks audio autoplay) */}
+      {!isPlaying && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-md text-white/70 tracking-[0.3em] uppercase text-sm animate-pulse">
+          Click anywhere to start
+        </div>
+      )}
+
+      {/* Element 2: Rotating Words in the middle */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <AnimatePresence mode="wait">
           <motion.span
             key={wordIndex}
-            className="text-4xl md:text-6xl lg:text-7xl font-serif italic text-[var(--text)] opacity-80"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            className="text-4xl md:text-6xl lg:text-7xl font-serif italic text-white drop-shadow-[0_0_20px_rgba(0,0,0,0.8)] text-center px-4"
+            initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           >
             {words[wordIndex]}
           </motion.span>
         </AnimatePresence>
-      </div>
-
-      {/* Element 3: Counter */}
-      <motion.div
-        className="absolute bottom-8 right-8 md:bottom-12 md:right-12 text-6xl md:text-8xl lg:text-9xl font-serif text-[var(--text)] tabular-nums leading-none"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-      >
-        {Math.round(progress).toString().padStart(3, "0")}
-      </motion.div>
-
-      {/* Element 4: Progress Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[var(--stroke)]/50">
-        <motion.div
-          className="h-full origin-left"
-          style={{
-            background: "linear-gradient(90deg, #89AACC 0%, #4E85BF 100%)",
-            boxShadow: "0 0 8px rgba(137, 170, 204, 0.35)",
-          }}
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: progress / 100 }}
-          transition={{ duration: 0.1, ease: "linear" }}
-        />
       </div>
     </motion.div>
   );
