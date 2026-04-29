@@ -53,7 +53,7 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
         src="/screenshots/space.mp4"
         playsInline
         onEnded={onComplete}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-contain md:object-cover bg-black"
       />
 
       {/* Click to Play Overlay (if browser blocks audio autoplay) */}
