@@ -317,35 +317,58 @@ export function Home() {
           
           {/* Phase 1: Initial Greeting */}
           <motion.div 
-            className="absolute inset-0 flex flex-col justify-center px-6 md:px-16 lg:px-32 z-10 pointer-events-none"
+            className="absolute inset-0 flex flex-col justify-center items-start w-full px-6 md:px-12 lg:px-24 z-10"
             style={{ opacity: titleOpacity, y: titleY }}
           >
             <h1 
-              className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl leading-[1] tracking-[-2px] font-normal text-white drop-shadow-2xl mix-blend-overlay" 
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-[-1.5px] max-w-5xl font-normal text-white flex flex-col gap-2" 
               style={{ fontFamily: "'Instrument Serif', serif" }}
             >
-              Hi, I'm <br/>
-              <span className="italic">Agam.</span>
+              <div>
+                Hi, I'm{" "}
+                <motion.span
+                  className="inline-block relative text-white"
+                  initial={{ clipPath: "inset(-50% 100% -50% -10%)" }}
+                  animate={{ 
+                    clipPath: "inset(-50% -50% -50% -10%)",
+                    textShadow: ["0px 0px 0px rgba(255,255,255,0)", "0px 0px 0px rgba(255,255,255,0)", "0px 0px 25px rgba(255,255,255,0.8)", "0px 0px 0px rgba(255,255,255,0)"]
+                  }}
+                  transition={{
+                    clipPath: { duration: 0.8, ease: "easeInOut" },
+                    textShadow: { duration: 2, times: [0, 0.4, 0.7, 1], ease: "easeInOut" }
+                  }}
+                >
+                  Agam
+                </motion.span>
+              </div>
             </h1>
-            <p className="text-sm md:text-base text-white/60 tracking-[0.4em] font-mono mt-8 uppercase max-w-md border-l border-white/20 pl-6">
-              Engineering Interfaces & Products.
-            </p>
+            
+            <motion.div 
+              className="mt-12 pointer-events-auto"
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ duration: 0.8, delay: 1.6, ease: "easeOut" }}
+            >
+              <Link 
+                to="/journey" 
+                className="liquid-glass rounded-full px-12 py-4 text-base text-white inline-flex items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.15)]"
+              >
+                My Journey
+              </Link>
+            </motion.div>
           </motion.div>
 
-          {/* Phase 2: Floating Cinematic Quote */}
+          {/* Phase 2: Creative Developer Text */}
           <motion.div 
-            className="absolute right-6 md:right-24 top-1/2 -translate-y-1/2 z-10 max-w-sm"
+            className="absolute right-6 md:right-24 top-1/2 -translate-y-1/2 z-10 pointer-events-none flex flex-col items-end"
             style={{ opacity: quoteOpacity, y: quoteY }}
           >
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
-              <p className="text-xl md:text-2xl text-white font-light leading-snug">
-                "Sometimes you gotta run before you can walk."
-              </p>
-              <div className="flex justify-between items-center mt-8">
-                <span className="text-white/60 text-sm">Tony Stark</span>
-                <span className="text-amber-500/80 text-[10px] tracking-widest font-mono uppercase">Iron Man - 2008</span>
-              </div>
-            </div>
+            <h2 className="text-6xl sm:text-8xl md:text-[10rem] text-white tracking-tighter font-normal drop-shadow-2xl mix-blend-overlay text-right" style={{ fontFamily: "'Instrument Serif', serif" }}>
+              Creative
+            </h2>
+            <p className="text-xl md:text-3xl text-white/80 tracking-[0.3em] font-light mt-2 uppercase mix-blend-overlay text-right">
+              Developer & Designer
+            </p>
           </motion.div>
 
           {/* Phase 3: Massive Action Text */}
