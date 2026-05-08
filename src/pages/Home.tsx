@@ -11,14 +11,22 @@ export function Home() {
 
   const heroRef = useRef<HTMLElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  
+  // Hero Canvas Refs
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const framesRef = useRef<HTMLImageElement[]>([]);
   const [framesLoaded, setFramesLoaded] = useState(false);
   const currentFrameIndex = useRef(0);
 
+  // Footer Canvas Refs
+  const footerCanvasRef = useRef<HTMLCanvasElement>(null);
+  const footerFramesRef = useRef<HTMLImageElement[]>([]);
+  const [footerFramesLoaded, setFooterFramesLoaded] = useState(false);
+  const currentFooterFrameIndex = useRef(0);
+
   const FRAME_COUNT = 106;
 
-  // Preload frames
+  // Preload hero frames
   useEffect(() => {
     let loadedCount = 0;
     const imgs: HTMLImageElement[] = [];
@@ -37,7 +45,26 @@ export function Home() {
     framesRef.current = imgs;
   }, []);
 
-  // Canvas drawing logic
+  // Preload footer frames
+  useEffect(() => {
+    let loadedCount = 0;
+    const imgs: HTMLImageElement[] = [];
+
+    for (let i = 1; i <= FRAME_COUNT; i++) {
+      const img = new Image();
+      img.src = `/frames_footer/frame_${String(i).padStart(4, "0")}.jpg`;
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === FRAME_COUNT) {
+          setFooterFramesLoaded(true);
+        }
+      };
+      imgs.push(img);
+    }
+    footerFramesRef.current = imgs;
+  }, []);
+
+  // Canvas drawing logic for Hero
   const drawFrame = (index: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -47,7 +74,6 @@ export function Home() {
     const img = framesRef.current[index];
     if (!img || !img.complete) return;
 
-    // Handle high DPI displays
     const dpr = window.devicePixelRatio || 1;
     const cw = window.innerWidth;
     const ch = window.innerHeight;
@@ -69,7 +95,42 @@ export function Home() {
       drawH = ch; drawW = ch * imgRatio;
     }
 
-    // Cover-fit
+    drawX = (cw - drawW) / 2;
+    drawY = (ch - drawH) / 2;
+    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  };
+
+  // Canvas drawing logic for Footer
+  const drawFooterFrame = (index: number) => {
+    const canvas = footerCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    
+    const img = footerFramesRef.current[index];
+    if (!img || !img.complete) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    const cw = window.innerWidth;
+    const ch = window.innerHeight;
+    
+    canvas.width = cw * dpr;
+    canvas.height = ch * dpr;
+    canvas.style.width = `${cw}px`;
+    canvas.style.height = `${ch}px`;
+    ctx.scale(dpr, dpr);
+
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const canvasRatio = cw / ch;
+
+    let drawW, drawH, drawX, drawY;
+
+    if (canvasRatio > imgRatio) {
+      drawW = cw; drawH = cw / imgRatio;
+    } else {
+      drawH = ch; drawW = ch * imgRatio;
+    }
+
     drawX = (cw - drawW) / 2;
     drawY = (ch - drawH) / 2;
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
@@ -77,15 +138,16 @@ export function Home() {
 
   // Initial draw and resize handler
   useEffect(() => {
-    if (framesLoaded) {
-      drawFrame(currentFrameIndex.current);
-    }
+    if (framesLoaded) drawFrame(currentFrameIndex.current);
+    if (footerFramesLoaded) drawFooterFrame(currentFooterFrameIndex.current);
+    
     const handleResize = () => {
       if (framesLoaded) drawFrame(currentFrameIndex.current);
+      if (footerFramesLoaded) drawFooterFrame(currentFooterFrameIndex.current);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [framesLoaded]);
+  }, [framesLoaded, footerFramesLoaded]);
 
   const { scrollYProgress, scrollY } = useScroll({
     target: sectionRef,
@@ -129,24 +191,35 @@ export function Home() {
   const buildY = useTransform(smoothHeroProgress, [0.55, 0.65], [50, 0]);
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 60,
+    damping: 20,
     restDelta: 0.001
   });
 
-  // Card 1 (Projects)
-  const y1 = useTransform(smoothProgress, [0, 0.15, 0.33], ["0vh", "0vh", "-100vh"]);
-  const opacity1 = useTransform(smoothProgress, [0, 0.25, 0.33], [1, 1, 0]);
+  // Smooth canvas scrub based on footer progress
+  useMotionValueEvent(smoothProgress, "change", (latest) => {
+    if (footerFramesLoaded && footerFramesRef.current.length > 0) {
+      const frameIndex = Math.min(
+        FRAME_COUNT - 1, 
+        Math.floor(latest * FRAME_COUNT)
+      );
+      
+      if (frameIndex !== currentFooterFrameIndex.current) {
+        currentFooterFrameIndex.current = frameIndex;
+        drawFooterFrame(frameIndex);
+      }
+    }
+  });
 
-  // Card 2 (Experience)
-  const y2 = useTransform(smoothProgress, [0, 0.15, 0.33, 0.48, 0.66], ["10vh", "10vh", "0vh", "0vh", "-100vh"]);
-  const scale2 = useTransform(smoothProgress, [0, 0.15, 0.33, 0.48, 0.66], [0.96, 0.96, 1, 1, 1]);
-  const opacity2 = useTransform(smoothProgress, [0, 0.1, 0.15, 0.33, 0.66], [0, 1, 1, 1, 1]);
+  // Footer Creative Text Overlays
+  const projOpacity = useTransform(smoothProgress, [0, 0.1, 0.25, 0.33], [0, 1, 1, 0]);
+  const projY = useTransform(smoothProgress, [0, 0.1, 0.25, 0.33], [50, 0, 0, -50]);
 
-  // Card 3 (Skills)
-  const y3 = useTransform(smoothProgress, [0.33, 0.48, 0.66, 1], ["10vh", "10vh", "0vh", "0vh"]);
-  const scale3 = useTransform(smoothProgress, [0.33, 0.48, 0.66, 1], [0.96, 0.96, 1, 1]);
-  const opacity3 = useTransform(smoothProgress, [0, 0.33, 0.43, 0.48], [0, 0, 1, 1]);
+  const expOpacity = useTransform(smoothProgress, [0.33, 0.43, 0.58, 0.66], [0, 1, 1, 0]);
+  const expY = useTransform(smoothProgress, [0.33, 0.43, 0.58, 0.66], [50, 0, 0, -50]);
+
+  const skillsOpacity = useTransform(smoothProgress, [0.66, 0.76, 0.9, 1], [0, 1, 1, 1]);
+  const skillsY = useTransform(smoothProgress, [0.66, 0.76, 0.9, 1], [50, 0, 0, 0]);
 
   const handleProjectClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -427,135 +500,81 @@ export function Home() {
         </motion.div>
       </section>
 
-      {/* SECTION 3: MASSIVE PROJECT CTA */}
-      <section ref={sectionRef} className="bg-transparent relative z-10 w-full h-[300vh]">
-        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-4 md:px-6">
-          {/* Subtle background glow */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-            <div className="w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-white/5 rounded-full blur-[120px]" />
-          </div>
+      {/* SECTION 3: FOOTER SCROLL SEQUENCE */}
+      <section ref={sectionRef} className="relative w-full h-[300vh] bg-black z-20">
+        <div className="sticky top-0 h-screen w-full overflow-hidden">
+          {/* Background Canvas for Footer Video */}
+          <canvas
+            ref={footerCanvasRef}
+            className="absolute inset-0 z-0 pointer-events-none"
+          />
+          
+          {/* Subtle gradient overlay to ensure text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/80 z-0 pointer-events-none" />
 
-          {/* 15 Floating Github Bubbles */}
-          {[
-            { left: '10%', top: '20%', delay: 0, duration: 5, scale: 1 },
-            { left: '15%', top: '55%', delay: 1, duration: 6, scale: 0.8 },
-            { left: '5%', top: '80%', delay: 2, duration: 4.5, scale: 1.2 },
-            { left: '25%', top: '15%', delay: 0.5, duration: 7, scale: 0.9 },
-            { left: '22%', top: '85%', delay: 1.5, duration: 5.5, scale: 0.7 },
-            { left: '85%', top: '25%', delay: 0.8, duration: 6.5, scale: 1.1 },
-            { left: '78%', top: '60%', delay: 2.5, duration: 5, scale: 0.9 },
-            { left: '92%', top: '80%', delay: 0.3, duration: 4, scale: 1 },
-            { left: '72%', top: '15%', delay: 1.8, duration: 5.8, scale: 0.8 },
-            { left: '88%', top: '45%', delay: 1.2, duration: 6.2, scale: 1.15 },
-            { left: '12%', top: '35%', delay: 1.3, duration: 6.8, scale: 0.85 },
-            { left: '8%', top: '65%', delay: 0.7, duration: 5.2, scale: 1.05 },
-            { left: '82%', top: '10%', delay: 2.1, duration: 4.8, scale: 0.75 },
-            { left: '95%', top: '55%', delay: 0.4, duration: 7.2, scale: 0.95 },
-            { left: '75%', top: '85%', delay: 1.9, duration: 6.1, scale: 1.1 }
-          ].map((bubble, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center z-0 hidden sm:flex pointer-events-none drop-shadow-[0_0_15px_rgba(255,255,255,0.05)]"
-              style={{
-                left: bubble.left,
-                top: bubble.top,
-                scale: bubble.scale,
-              }}
-              animate={{
-                y: [0, -30, 0],
-                x: [0, (i % 2 === 0 ? 15 : -15), 0],
-                rotate: [0, 15, -15, 0]
-              }}
-              transition={{
-                duration: bubble.duration,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: bubble.delay
-              }}
+          {/* Phase 1: Projects */}
+          <motion.div 
+            className="absolute inset-0 flex flex-col justify-center items-center px-6 z-10 pointer-events-none"
+            style={{ opacity: projOpacity, y: projY }}
+          >
+            <h2 
+              className="text-6xl sm:text-8xl md:text-[10rem] font-normal text-white tracking-tighter drop-shadow-2xl mb-8"
+              style={{ fontFamily: "'Instrument Serif', serif" }}
             >
-              <svg 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                className="w-5 h-5 md:w-7 md:h-7 text-white/40"
+              Projects<span className="text-amber-500">*</span>
+            </h2>
+            <div className="pointer-events-auto">
+              <button 
+                onClick={handleProjectClick}
+                className="liquid-glass rounded-full px-10 py-4 text-sm tracking-[0.2em] uppercase font-mono text-white flex items-center gap-4 hover:scale-105 transition-all group"
               >
-                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.24c3-.3 6-1.5 6-6.76a5.2 5.2 0 0 0-1.5-3.8 5.3 5.3 0 0 0-.15-3.8s-1.2-.38-3.9 1.4a13.3 13.3 0 0 0-7 0C4.8 2.38 3.6 2.76 3.6 2.76a5.3 5.3 0 0 0-.15 3.8A5.2 5.2 0 0 0 2 12c0 5.26 3 6.46 6 6.76a4.8 4.8 0 0 0-1 3.24v4"></path>
-                <path d="M9 19c-4.3 1.4-5.3-2-8-3"></path>
-              </svg>
-            </motion.div>
-          ))}
+                Explore Work <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </motion.div>
 
-          {/* Stacking Cards Container */}
-          <div className="relative z-10 w-full max-w-5xl mx-auto h-[250px] sm:h-[350px] md:h-[450px] flex items-center justify-center perspective-1000">
-            {/* Card 1: Projects */}
-            <motion.button 
-              style={{ y: y1, opacity: opacity1 }}
-              onClick={handleProjectClick}
-              className="absolute inset-x-0 group flex w-full items-center justify-between overflow-hidden rounded-[2rem] md:rounded-[4rem] border border-white/10 bg-[#111] p-8 md:p-16 lg:p-20 transition-all duration-300 hover:scale-[1.02] hover:border-white/30 hover:bg-[#1a1a1a] hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] text-left shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-30"
+          {/* Phase 2: Experience */}
+          <motion.div 
+            className="absolute inset-0 flex flex-col justify-center items-center px-6 z-10 pointer-events-none"
+            style={{ opacity: expOpacity, y: expY }}
+          >
+            <h2 
+              className="text-6xl sm:text-8xl md:text-[10rem] font-normal text-white tracking-tighter drop-shadow-2xl mb-8"
+              style={{ fontFamily: "'Instrument Serif', serif" }}
             >
-              <div className="flex flex-col items-start gap-4">
-                <span className="text-white/40 text-sm md:text-base tracking-widest uppercase font-medium">Explore My Work</span>
-                <h2 
-                  className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-normal text-white tracking-tight"
-                  style={{ fontFamily: "'Instrument Serif', serif" }}
-                >
-                  Projects<span className="text-white/30">*</span>
-                </h2>
-              </div>
-              
-              <div className="hidden md:flex items-center justify-center w-24 h-24 lg:w-32 lg:h-32 rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
-                <ArrowRight className="w-10 h-10 lg:w-12 lg:h-12 text-white transition-all duration-300 group-hover:translate-x-[6px]" />
-              </div>
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent group-hover:animate-shimmer" />
-            </motion.button>
+              Experience<span className="text-amber-500">*</span>
+            </h2>
+            <div className="pointer-events-auto">
+              <button 
+                onClick={() => navigate('/experience')}
+                className="liquid-glass rounded-full px-10 py-4 text-sm tracking-[0.2em] uppercase font-mono text-white flex items-center gap-4 hover:scale-105 transition-all group"
+              >
+                View Background <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </motion.div>
 
-            {/* Card 2: Experience */}
-            <motion.button 
-              style={{ y: y2, scale: scale2, opacity: opacity2 }}
-              onClick={() => navigate('/experience')}
-              className="absolute inset-x-0 group flex w-full items-center justify-between overflow-hidden rounded-[2rem] md:rounded-[4rem] border border-white/10 bg-[#111] p-8 md:p-16 lg:p-20 transition-all duration-300 hover:scale-[1.02] hover:border-white/30 hover:bg-[#1a1a1a] hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] text-left shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-20"
+          {/* Phase 3: Skills */}
+          <motion.div 
+            className="absolute inset-0 flex flex-col justify-center items-center px-6 z-10 pointer-events-none"
+            style={{ opacity: skillsOpacity, y: skillsY }}
+          >
+            <h2 
+              className="text-6xl sm:text-8xl md:text-[10rem] font-normal text-white tracking-tighter drop-shadow-2xl mb-8"
+              style={{ fontFamily: "'Instrument Serif', serif" }}
             >
-              <div className="flex flex-col items-start gap-4">
-                <span className="text-white/40 text-sm md:text-base tracking-widest uppercase font-medium">View My Background</span>
-                <h2 
-                  className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-normal text-white tracking-tight"
-                  style={{ fontFamily: "'Instrument Serif', serif" }}
-                >
-                  Experience<span className="text-white/30">*</span>
-                </h2>
-              </div>
-              
-              <div className="hidden md:flex items-center justify-center w-24 h-24 lg:w-32 lg:h-32 rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
-                <ArrowRight className="w-10 h-10 lg:w-12 lg:h-12 text-white transition-all duration-300 group-hover:translate-x-[6px]" />
-              </div>
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent group-hover:animate-shimmer" />
-            </motion.button>
+              Skills<span className="text-amber-500">*</span>
+            </h2>
+            <div className="pointer-events-auto">
+              <button 
+                onClick={() => navigate('/skills')}
+                className="liquid-glass rounded-full px-10 py-4 text-sm tracking-[0.2em] uppercase font-mono text-white flex items-center gap-4 hover:scale-105 transition-all group"
+              >
+                Discover Stack <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </motion.div>
 
-            {/* Card 3: Skills */}
-            <motion.button 
-              style={{ y: y3, scale: scale3, opacity: opacity3 }}
-              onClick={() => navigate('/skills')}
-              className="absolute inset-x-0 group flex w-full items-center justify-between overflow-hidden rounded-[2rem] md:rounded-[4rem] border border-white/10 bg-[#111] p-8 md:p-16 lg:p-20 transition-all duration-300 hover:scale-[1.02] hover:border-white/30 hover:bg-[#1a1a1a] hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] text-left shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-10"
-            >
-              <div className="flex flex-col items-start gap-4">
-                <span className="text-white/40 text-sm md:text-base tracking-widest uppercase font-medium">My Technical Stack</span>
-                <h2 
-                  className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-normal text-white tracking-tight"
-                  style={{ fontFamily: "'Instrument Serif', serif" }}
-                >
-                  Skills<span className="text-white/30">*</span>
-                </h2>
-              </div>
-              
-              <div className="hidden md:flex items-center justify-center w-24 h-24 lg:w-32 lg:h-32 rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
-                <ArrowRight className="w-10 h-10 lg:w-12 lg:h-12 text-white transition-all duration-300 group-hover:translate-x-[6px]" />
-              </div>
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent group-hover:animate-shimmer" />
-            </motion.button>
-          </div>
         </div>
       </section>
 
