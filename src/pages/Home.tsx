@@ -3,12 +3,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionV
 import { Link, useNavigate } from 'react-router-dom';
 import { WordsPullUpMultiStyle } from '../components/WordsPullUpMultiStyle';
 import { AnimatedLetter } from '../components/AnimatedLetter';
-import { Canvas } from '@react-three/fiber';
-import { useState, Suspense, useRef, useEffect } from 'react';
-import { ProjectModel } from '../components/ProjectModel';
-import { Center, Bounds } from '@react-three/drei';
-
-import confetti from 'canvas-confetti';
+import { useState, useRef, useEffect } from 'react';
 
 export function Home() {
   const navigate = useNavigate();
