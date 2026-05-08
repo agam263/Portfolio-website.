@@ -109,7 +109,7 @@ export function Skills() {
             <div className="h-[1px] w-12 bg-amber-500/50" />
             <span className="text-amber-500 tracking-[0.3em] font-mono text-xs uppercase">Protocol - Stack Reveal</span>
           </div>
-          <h1 className="text-6xl md:text-8xl lg:text-[9rem] font-normal text-white mb-6 tracking-tighter leading-[0.9]" style={{ fontFamily: "'Instrument Serif', serif" }}>
+          <h1 className="text-6xl md:text-8xl lg:text-[9rem] font-normal text-white mb-6 tracking-tighter leading-[0.9]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
             Technical<br/>Arsenal<span className="text-amber-500">*</span>
           </h1>
           <p className="text-white/40 text-sm md:text-base font-mono tracking-widest max-w-2xl border-l border-amber-500/30 pl-6 uppercase mt-8">
@@ -143,7 +143,7 @@ export function Skills() {
                   <div className="absolute inset-0 bg-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   {category.icon}
                 </div>
-                <h3 className="text-4xl md:text-5xl font-normal text-white tracking-wide" style={{ fontFamily: "'Instrument Serif', serif" }}>
+                <h3 className="text-4xl md:text-5xl font-normal text-white tracking-wide" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   {category.title}
                 </h3>
               </div>

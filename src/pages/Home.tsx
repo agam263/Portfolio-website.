@@ -273,7 +273,7 @@ export function Home() {
               <div className="overflow-hidden pb-4">
                 <motion.h2 
                   className="text-7xl sm:text-8xl md:text-[10rem] text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/30 tracking-tighter font-normal drop-shadow-[0_0_40px_rgba(255,255,255,0.4)]" 
-                  style={{ fontFamily: "'Instrument Serif', serif" }}
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                   initial={{ y: "120%", rotate: 2 }}
                   animate={{ y: "0%", rotate: 0 }}
                   transition={{ delay: 0.6, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -346,7 +346,7 @@ export function Home() {
           
           {/* Navigation Bar */}
           <nav className="relative z-10 flex flex-row justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto w-full pointer-events-auto">
-            <div className="text-2xl md:text-3xl tracking-tight text-white" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            <div className="text-2xl md:text-3xl tracking-tight text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
               Agam<sup className="text-xs text-white/60">*</sup>
             </div>
             <div className="flex items-center gap-4 md:gap-8">
@@ -394,7 +394,7 @@ export function Home() {
           >
             <h1 
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-[-1.5px] max-w-5xl font-normal text-white flex flex-col gap-2" 
-              style={{ fontFamily: "'Instrument Serif', serif" }}
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               <div>
                 Hi, I'm{" "}
@@ -435,7 +435,7 @@ export function Home() {
             className="absolute right-6 md:right-24 top-1/2 -translate-y-1/2 z-10 pointer-events-none flex flex-col items-end"
             style={{ opacity: quoteOpacity, y: quoteY }}
           >
-            <h2 className="text-6xl sm:text-8xl md:text-[10rem] text-white tracking-tighter font-normal drop-shadow-2xl mix-blend-overlay text-right" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            <h2 className="text-6xl sm:text-8xl md:text-[10rem] text-white tracking-tighter font-normal drop-shadow-2xl mix-blend-overlay text-right" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
               Creative
             </h2>
             <p className="text-xl md:text-3xl text-white/80 tracking-[0.3em] font-light mt-2 uppercase mix-blend-overlay text-right">
@@ -519,7 +519,7 @@ export function Home() {
           >
             <h2 
               className="text-6xl sm:text-8xl md:text-[10rem] font-normal text-white tracking-tighter drop-shadow-2xl mb-8"
-              style={{ fontFamily: "'Instrument Serif', serif" }}
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Projects<span className="text-amber-500">*</span>
             </h2>
@@ -540,7 +540,7 @@ export function Home() {
           >
             <h2 
               className="text-6xl sm:text-8xl md:text-[10rem] font-normal text-white tracking-tighter drop-shadow-2xl mb-8"
-              style={{ fontFamily: "'Instrument Serif', serif" }}
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Experience<span className="text-amber-500">*</span>
             </h2>
@@ -561,7 +561,7 @@ export function Home() {
           >
             <h2 
               className="text-6xl sm:text-8xl md:text-[10rem] font-normal text-white tracking-tighter drop-shadow-2xl mb-8"
-              style={{ fontFamily: "'Instrument Serif', serif" }}
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Skills<span className="text-amber-500">*</span>
             </h2>

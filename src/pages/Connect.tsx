@@ -54,7 +54,7 @@ export function Connect() {
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm font-medium tracking-wide">Back to Home</span>
           </Link>
-          <div className="text-xl tracking-tight text-white" style={{ fontFamily: "'Instrument Serif', serif" }}>
+          <div className="text-xl tracking-tight text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
             Agam<sup className="text-xs">*</sup>
           </div>
         </div>
@@ -68,7 +68,7 @@ export function Connect() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center mb-10 md:mb-16"
         >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-normal tracking-tight text-white mb-4" style={{ fontFamily: "'Instrument Serif', serif" }}>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-normal tracking-tight text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
             Let's <em className="not-italic text-white/50">Connect</em>
           </h1>
           <p className="text-white/40 max-w-xl mx-auto text-base md:text-lg">
@@ -155,7 +155,7 @@ export function Connect() {
                 >
                   <CheckCircle2 className="w-10 h-10 text-emerald-400" />
                 </motion.div>
-                <h3 className="text-3xl md:text-5xl text-white font-normal mb-4" style={{ fontFamily: "'Instrument Serif', serif" }}>
+                <h3 className="text-3xl md:text-5xl text-white font-normal mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   Yay! Message Sent
                 </h3>
                 <p className="text-white/60 text-lg mb-8 max-w-md">

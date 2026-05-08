@@ -85,7 +85,7 @@ export function Experience() {
             <div className="h-[1px] w-12 bg-amber-500/50" />
             <span className="text-amber-500 tracking-[0.3em] font-mono text-xs uppercase">Protocol - Timeline</span>
           </div>
-          <h1 className="text-6xl md:text-8xl lg:text-[9rem] font-normal text-white mb-6 tracking-tighter leading-[0.9]" style={{ fontFamily: "'Instrument Serif', serif" }}>
+          <h1 className="text-6xl md:text-8xl lg:text-[9rem] font-normal text-white mb-6 tracking-tighter leading-[0.9]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
             Experience<span className="text-amber-500">*</span>
           </h1>
           <p className="text-white/40 text-sm md:text-base font-mono tracking-widest max-w-2xl border-l border-amber-500/30 pl-6 uppercase mt-8">
@@ -117,7 +117,7 @@ export function Experience() {
               <div className="flex flex-col md:flex-row gap-8 md:gap-16 relative z-10">
                 {/* Meta details */}
                 <div className="md:w-1/3 flex flex-col gap-4">
-                  <h3 className="text-3xl md:text-4xl text-white font-normal leading-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
+                  <h3 className="text-3xl md:text-4xl text-white font-normal leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                     {exp.title}
                   </h3>
                   

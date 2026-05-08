@@ -169,7 +169,7 @@ export function Journey() {
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm font-medium tracking-wide">Back to Home</span>
           </Link>
-          <div className="text-xl tracking-tight text-foreground" style={{ fontFamily: "'Instrument Serif', serif" }}>
+          <div className="text-xl tracking-tight text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
             Agam<sup className="text-xs">*</sup>
           </div>
         </div>
@@ -182,7 +182,7 @@ export function Journey() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-5xl md:text-7xl lg:text-8xl font-normal tracking-tight mb-6"
-          style={{ fontFamily: "'Instrument Serif', serif" }}
+          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
         >
           My <em className="not-italic text-muted-foreground">Journey</em>
         </motion.h1>
@@ -221,7 +221,7 @@ export function Journey() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-normal mb-8" style={{ fontFamily: "'Instrument Serif', serif" }}>
+          <h2 className="text-3xl md:text-5xl font-normal mb-8" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
             Ready to build the future?
           </h2>
           <Link to="/connect" className="liquid-glass rounded-full px-10 py-4 text-sm text-foreground hover:scale-[1.05] transition-transform inline-flex items-center">

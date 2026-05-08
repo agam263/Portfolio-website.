@@ -27,8 +27,9 @@ export default {
         input: "hsl(var(--input))",
       },
       fontFamily: {
-        serif: ['"Instrument Serif"', 'serif'],
+        serif: ['"Space Grotesk"', 'sans-serif'],
         sans: ['"Inter"', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       keyframes: {
         shimmer: {

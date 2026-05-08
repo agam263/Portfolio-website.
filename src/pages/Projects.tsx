@@ -70,7 +70,7 @@ export function Projects() {
             <div className="h-[1px] w-12 bg-amber-500/50" />
             <span className="text-amber-500 tracking-[0.3em] font-mono text-xs uppercase">Protocol - Deployments</span>
           </div>
-          <h1 className="text-6xl md:text-8xl lg:text-[9rem] font-normal text-white mb-6 tracking-tighter leading-[0.9]" style={{ fontFamily: "'Instrument Serif', serif" }}>
+          <h1 className="text-6xl md:text-8xl lg:text-[9rem] font-normal text-white mb-6 tracking-tighter leading-[0.9]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
             My Projects<span className="text-amber-500">*</span>
           </h1>
           <p className="text-white/40 text-sm md:text-base font-mono tracking-widest max-w-2xl border-l border-amber-500/30 pl-6 uppercase mt-8">
@@ -158,7 +158,7 @@ export function Projects() {
                   ))}
                 </div>
                 
-                <h4 className="text-4xl md:text-6xl font-normal text-white mb-6 tracking-wide" style={{ fontFamily: "'Instrument Serif', serif" }}>
+                <h4 className="text-4xl md:text-6xl font-normal text-white mb-6 tracking-wide" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   {project.title}
                 </h4>
                 
