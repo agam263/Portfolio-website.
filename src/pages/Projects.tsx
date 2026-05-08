@@ -10,52 +10,72 @@ import { TorusNodeModel } from '../components/TorusNodeModel';
 
 export function Projects() {
   return (
-    <div className="bg-black min-h-screen text-foreground selection:bg-primary selection:text-black overflow-hidden relative">
+    <div className="bg-black min-h-screen text-white selection:bg-amber-500 selection:text-black font-sans pb-32 relative overflow-hidden">
       
-      {/* Background glow */}
-      <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
-        <div className="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-white/5 rounded-full blur-[150px]" />
+      {/* Cinematic Background Glow */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-1/4 left-1/4 w-[40vw] h-[40vw] bg-amber-500/5 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute bottom-1/4 right-1/4 w-[30vw] h-[30vw] bg-white/5 rounded-full blur-[100px] mix-blend-screen" />
+      </div>
+
+      {/* Cinematic HUD Elements (Static) */}
+      <div className="fixed top-24 left-8 md:left-12 flex flex-col gap-2 z-0 hidden sm:block pointer-events-none opacity-50">
+        <div className="flex items-center gap-3">
+          <div className="w-3 h-3 border-t border-l border-amber-500/50" />
+          <span className="text-[10px] tracking-[0.4em] text-white/40 font-mono uppercase">Telemetry Link - Live</span>
+        </div>
+      </div>
+      <div className="fixed top-24 right-8 md:right-12 flex flex-col items-end gap-2 z-0 hidden sm:block pointer-events-none opacity-50">
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] tracking-[0.4em] text-white/40 font-mono uppercase">Core Status 93.0%</span>
+          <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+          <div className="w-3 h-3 border-t border-r border-amber-500/50" />
+        </div>
+      </div>
+      <div className="fixed bottom-12 left-8 md:left-12 flex items-end gap-3 z-0 hidden sm:flex pointer-events-none opacity-50">
+        <div className="w-3 h-3 border-b border-l border-amber-500/50" />
+        <span className="text-[10px] tracking-[0.4em] text-white/20 font-mono uppercase">SEQ 005 / 169</span>
+      </div>
+      <div className="fixed bottom-12 right-8 md:right-12 flex items-end justify-end gap-3 z-0 hidden sm:flex pointer-events-none opacity-50">
+        <span className="text-[10px] tracking-[0.4em] text-white/20 font-mono uppercase">System // Deployments</span>
+        <div className="w-3 h-3 border-b border-r border-amber-500/50" />
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 p-6 bg-transparent">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <Link to="/" className="flex items-center gap-2 text-white/50 hover:text-white transition-colors bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+      <nav className="fixed top-0 w-full p-6 md:px-12 flex justify-between items-center z-50 bg-gradient-to-b from-black/80 to-transparent backdrop-blur-[2px]">
+        <Link to="/" className="group flex items-center gap-4 text-white hover:text-amber-500 transition-colors">
+          <div className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center transition-all group-hover:bg-amber-500/10 group-hover:border-amber-500/30 group-hover:-translate-x-2">
             <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-medium tracking-wide">Back to Home</span>
-          </Link>
-          <div className="text-xl tracking-tight text-white" style={{ fontFamily: "'Instrument Serif', serif" }}>
-            Agam<sup className="text-xs">*</sup>
+          </div>
+          <span className="text-xs tracking-[0.2em] uppercase font-mono text-white/60 group-hover:text-amber-500">Back</span>
+        </Link>
+        <div className="flex items-center gap-3">
+          <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+          <div className="text-xs tracking-[0.3em] text-white/80 uppercase font-mono hidden sm:block">
+            Agam <span className="text-white/40">/ Projects</span>
           </div>
         </div>
       </nav>
 
       {/* Main Content & Projects List Section */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 pb-32 pt-32 min-h-screen flex flex-col">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pb-32 pt-40 flex flex-col">
         {/* Title */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-16 md:mb-24 z-20 pointer-events-none"
-        >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-normal tracking-tight text-white mb-4" style={{ fontFamily: "'Instrument Serif', serif" }}>
-            My <em className="not-italic text-white/50">Projects</em>
-          </h1>
-          <p className="text-white/40 max-w-xl mx-auto text-sm md:text-base">
-            Exploring the intersection of code, design, and 3D experiences.
-          </p>
-        </motion.div>
-
-        <motion.div 
           initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-16 md:mb-24 w-full"
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-24 relative"
         >
-          <h3 className="text-sm md:text-base text-white/40 tracking-[0.3em] uppercase mb-4">Featured Work</h3>
-          <div className="h-[1px] w-full bg-gradient-to-r from-white/20 to-transparent" />
+          <div className="flex items-center gap-4 mb-8">
+            <div className="h-[1px] w-12 bg-amber-500/50" />
+            <span className="text-amber-500 tracking-[0.3em] font-mono text-xs uppercase">Protocol - Deployments</span>
+          </div>
+          <h1 className="text-6xl md:text-8xl lg:text-[9rem] font-normal text-white mb-6 tracking-tighter leading-[0.9]" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            My Projects<span className="text-amber-500">*</span>
+          </h1>
+          <p className="text-white/40 text-sm md:text-base font-mono tracking-widest max-w-2xl border-l border-amber-500/30 pl-6 uppercase mt-8">
+            Exploring the intersection of code, design, and interactive 3D experiences.
+          </p>
         </motion.div>
 
         <div className="flex flex-col gap-12 md:gap-24">
@@ -88,13 +108,16 @@ export function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               whileHover={{ 
                 scale: 1.02, 
-                y: -10,
                 transition: { duration: 0.4, ease: "easeOut" }
               }}
               viewport={{ once: true, margin: "-150px" }}
               transition={{ duration: 1, delay: idx * 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="group relative flex flex-col md:flex-row gap-8 md:gap-16 p-8 md:p-12 rounded-[2rem] border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/20 hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-500 overflow-hidden"
+              className="group relative flex flex-col md:flex-row gap-8 md:gap-16 p-8 md:p-12 border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden hover:bg-white/[0.04] hover:border-amber-500/30 transition-all duration-500"
             >
+              {/* Tech Corner Accents */}
+              <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-white/20 group-hover:border-amber-500/50 transition-colors" />
+              <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-white/20 group-hover:border-amber-500/50 transition-colors" />
+
               <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.15]">
                 <Canvas 
                   camera={{ position: [0, 2, 6], fov: 45 }} 
@@ -119,37 +142,40 @@ export function Projects() {
                   </Suspense>
                 </Canvas>
               </div>
+              
+              {/* Amber Glow on Canvas Hover */}
+              <div className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-[0.05] bg-amber-500 transition-opacity duration-500" />
 
               {/* Glass Shimmer on Hover */}
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent group-hover:animate-shimmer pointer-events-none z-0" />
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-amber-500/10 to-transparent group-hover:animate-shimmer pointer-events-none z-0" />
 
               <div className="flex-1 flex flex-col justify-center relative z-10">
                 <div className="flex flex-wrap gap-3 mb-6">
                   {project.tags.map((tag, i) => (
-                    <span key={i} className="px-4 py-1.5 rounded-full border border-white/10 text-xs text-white/50 tracking-widest uppercase bg-white/5 backdrop-blur-md">
+                    <span key={i} className="px-4 py-1.5 rounded-none border border-white/10 text-[10px] text-white/50 tracking-widest uppercase bg-black/40 backdrop-blur-md group-hover:border-amber-500/30 transition-colors font-mono">
                       {tag}
                     </span>
                   ))}
                 </div>
                 
-                <h4 className="text-4xl md:text-6xl font-normal text-white mb-6" style={{ fontFamily: "'Instrument Serif', serif" }}>
+                <h4 className="text-4xl md:text-6xl font-normal text-white mb-6 tracking-wide" style={{ fontFamily: "'Instrument Serif', serif" }}>
                   {project.title}
                 </h4>
                 
-                <p className="text-white/60 text-lg leading-relaxed mb-8 font-light max-w-2xl">
+                <p className="text-white/50 text-sm md:text-base leading-relaxed mb-8 font-light max-w-2xl">
                   {project.description}
                 </p>
 
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-4 mt-auto">
                   {project.github && project.github !== "#" && (
                     <a 
                       href={project.github}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-3 text-white w-max px-6 py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300"
+                      className="liquid-glass inline-flex items-center gap-3 text-white px-6 py-3 border border-white/20 hover:border-amber-500/50 transition-all duration-300 font-mono text-[10px] tracking-widest uppercase group/btn"
                     >
-                      <span className="text-sm tracking-widest uppercase font-medium">View GitHub</span>
-                      <ArrowLeft className="w-4 h-4 rotate-135" />
+                      <span className="group-hover/btn:text-amber-500 transition-colors">GitHub</span>
+                      <ArrowLeft className="w-3 h-3 rotate-135 group-hover/btn:text-amber-500 transition-colors" />
                     </a>
                   )}
                   {project.url && (
@@ -157,10 +183,10 @@ export function Projects() {
                       href={project.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-3 text-black bg-white w-max px-6 py-3 rounded-full border border-white hover:bg-transparent hover:text-white transition-all duration-300"
+                      className="inline-flex items-center gap-3 text-black bg-white/90 px-6 py-3 border border-transparent hover:bg-amber-500 hover:text-black hover:border-amber-500 transition-all duration-300 font-mono text-[10px] tracking-widest uppercase group/btn"
                     >
-                      <span className="text-sm tracking-widest uppercase font-medium">Live Demo</span>
-                      <ArrowLeft className="w-4 h-4 rotate-135" />
+                      <span>Live Demo</span>
+                      <ArrowLeft className="w-3 h-3 rotate-135" />
                     </a>
                   )}
                 </div>
