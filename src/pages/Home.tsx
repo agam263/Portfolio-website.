@@ -316,7 +316,7 @@ export function Home() {
           
           {/* Phase 1: Initial Greeting */}
           <motion.div 
-            className="absolute inset-0 flex flex-col justify-center items-start w-full px-6 md:px-12 lg:px-24 z-10"
+            className="absolute inset-0 flex flex-col justify-center items-start w-full px-6 md:px-12 lg:px-24 z-10 pointer-events-none"
             style={{ opacity: titleOpacity, y: titleY }}
           >
             <h1 
