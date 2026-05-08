@@ -149,7 +149,7 @@ export function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, [framesLoaded, footerFramesLoaded]);
 
-  const { scrollYProgress, scrollY } = useScroll({
+  const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"]
   });

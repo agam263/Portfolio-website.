@@ -3,7 +3,8 @@ import { ArrowLeft, Code2, Database, BrainCircuit, Wrench } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { FaJava, FaPython, FaReact, FaNodeJs, FaHtml5, FaChartBar, FaCogs, FaBrain, FaGoogle, FaGithub, FaServer } from 'react-icons/fa';
 import { FaGolang } from 'react-icons/fa6';
-import { SiJavascript, SiExpress, SiTailwindcss, SiNumpy, SiPandas, SiFirebase, SiMongodb, SiVisualstudiocode } from 'react-icons/si';
+import { SiJavascript, SiExpress, SiTailwindcss, SiNumpy, SiPandas, SiFirebase, SiMongodb } from 'react-icons/si';
+import { VscVscode } from 'react-icons/vsc';
 
 const SKILL_CATEGORIES = [
   {
@@ -47,7 +48,7 @@ const SKILL_CATEGORIES = [
       { name: "Google OAuth", level: "Basic", techIcon: <FaGoogle /> },
       { name: "Git & GitHub", level: "Advanced", techIcon: <FaGithub /> },
       { name: "REST APIs", level: "Advanced", techIcon: <FaServer /> },
-      { name: "VS Code", level: "Advanced", techIcon: <SiVisualstudiocode /> }
+      { name: "VS Code", level: "Advanced", techIcon: <VscVscode /> }
     ]
   }
 ];
