@@ -98,8 +98,8 @@ export function Home() {
   });
 
   const smoothHeroProgress = useSpring(heroProgress, {
-    stiffness: 150,
-    damping: 30,
+    stiffness: 60,
+    damping: 20,
     restDelta: 0.001
   });
 
@@ -347,7 +347,7 @@ export function Home() {
               className="mt-12 pointer-events-auto"
               initial={{ opacity: 0, y: 20 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.8, delay: 1.6, ease: "easeOut" }}
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             >
               <Link 
                 to="/journey" 
