@@ -1,12 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { Canvas } from '@react-three/fiber';
-import { Float, Center, Bounds, OrbitControls } from '@react-three/drei';
-import { Suspense } from 'react';
-import { ProjectModel } from '../components/ProjectModel';
-import { GeometricModel } from '../components/GeometricModel';
-import { TorusNodeModel } from '../components/TorusNodeModel';
 
 export function Projects() {
   return (
@@ -118,29 +112,23 @@ export function Projects() {
               <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-white/20 group-hover:border-amber-500/50 transition-colors" />
               <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-white/20 group-hover:border-amber-500/50 transition-colors" />
 
-              <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.15]">
-                <Canvas 
-                  camera={{ position: [0, 2, 6], fov: 45 }} 
-                  dpr={[1, 1.5]} 
-                  gl={{ antialias: false, powerPreference: "high-performance" }}
-                >
-                  <ambientLight intensity={2} />
-                  <directionalLight position={[10, 10, 5]} intensity={3} />
-                  <directionalLight position={[-10, -10, -5]} intensity={1} />
-                  <spotLight position={[0, 10, 0]} intensity={3} penumbra={1} />
-                  <Suspense fallback={null}>
-                    <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} autoRotate autoRotateSpeed={1} />
-                    <Bounds fit clip observe margin={0.5}>
-                      <Center>
-                        <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-                          {idx === 0 && <ProjectModel />}
-                          {idx === 1 && <GeometricModel />}
-                          {idx === 2 && <TorusNodeModel />}
-                        </Float>
-                      </Center>
-                    </Bounds>
-                  </Suspense>
-                </Canvas>
+              {/* Tech Background Grid & Glowing Number */}
+              <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-end">
+                {/* Giant Number */}
+                <div className="text-[12rem] md:text-[20rem] font-display font-bold text-white/5 leading-none mr-[-5%] group-hover:text-amber-500/5 group-hover:scale-110 transition-all duration-700 select-none">
+                  0{idx + 1}
+                </div>
+                
+                {/* Grid Pattern */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100%_40px] group-hover:bg-[linear-gradient(rgba(245,158,11,0.05)_1px,transparent_1px)] transition-colors duration-500" />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_100%] group-hover:bg-[linear-gradient(90deg,rgba(245,158,11,0.05)_1px,transparent_1px)] transition-colors duration-500" />
+                
+                {/* Scanning Laser Line */}
+                <motion.div 
+                  className="absolute top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-amber-500 to-transparent opacity-0 group-hover:opacity-50 transition-opacity duration-500"
+                  animate={{ left: ["0%", "100%", "0%"] }}
+                  transition={{ duration: 4, ease: "linear", repeat: Infinity }}
+                />
               </div>
               
               {/* Amber Glow on Canvas Hover */}
