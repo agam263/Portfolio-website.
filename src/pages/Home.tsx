@@ -234,7 +234,7 @@ export function Home() {
   return (
     <div className="bg-background text-primary min-h-screen selection:bg-primary selection:text-black ">
       
-      {/* DRIVE TRANSITION OVERLAY - TECH HUD VERSION */}
+      {/* DRIVE TRANSITION OVERLAY - ULTRA CREATIVE HUD */}
       <AnimatePresence>
         {isDriving && (
           <motion.div 
@@ -244,66 +244,90 @@ export function Home() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            {/* Tech Grid Background */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(245,158,11,0.05)_1px,transparent_1px)] bg-[size:100%_40px]" />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(245,158,11,0.05)_1px,transparent_1px)] bg-[size:40px_100%]" />
+            {/* Cinematic Background Scanlines */}
+            <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(245,158,11,0.05)_2px,rgba(245,158,11,0.05)_4px)] z-0" />
             
-            {/* Scanning Laser Line */}
+            {/* Radial Core Glow */}
             <motion.div 
-              className="absolute top-0 bottom-0 w-[2px] bg-amber-500 shadow-[0_0_20px_rgba(245,158,11,1)]"
-              initial={{ left: "0%" }}
-              animate={{ left: "100%" }}
-              transition={{ duration: 1.2, ease: "easeInOut" }}
-            />
-
-            {/* Central HUD Data */}
-            <motion.div 
-              className="relative z-10 flex flex-col items-center justify-center w-full"
+              className="absolute inset-0 z-0 flex items-center justify-center"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1.5 }}
+              transition={{ duration: 1, ease: "easeOut" }}
             >
-              <div className="flex flex-col items-center justify-center gap-4 border border-amber-500/30 bg-black/80 backdrop-blur-md p-12 relative overflow-hidden">
-                {/* Corner Tech Accents */}
-                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-amber-500" />
-                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-amber-500" />
-                <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-amber-500" />
-                <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-amber-500" />
-
-                <motion.div 
-                  className="flex items-center gap-4 text-amber-500 text-sm tracking-[0.4em] uppercase font-mono"
-                  initial={{ opacity: 0, filter: "blur(10px)", y: 10 }}
-                  animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  <span className="w-2 h-2 bg-amber-500 animate-pulse shadow-[0_0_10px_rgba(245,158,11,1)]" />
-                  <span>Accessing Deployments</span>
-                </motion.div>
-                
-                <motion.h2 
-                  className="text-5xl md:text-7xl text-white tracking-tighter font-display mt-2" 
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
-                >
-                  PROJECTS<span className="text-amber-500">*</span>
-                </motion.h2>
-
-                {/* Progress Bar */}
-                <div className="w-full h-[2px] bg-white/10 mt-6 relative overflow-hidden">
-                  <motion.div 
-                    className="absolute top-0 left-0 bottom-0 bg-amber-500 shadow-[0_0_15px_rgba(245,158,11,1)]"
-                    initial={{ width: "0%" }}
-                    animate={{ width: "100%" }}
-                    transition={{ delay: 0.2, duration: 1.0, ease: "circIn" }}
-                  />
-                </div>
-              </div>
+              <div className="w-[50vw] h-[50vw] rounded-full bg-amber-500/10 blur-[100px]" />
             </motion.div>
-            
-            {/* Seamless Flash Transition to Next Page */}
+
+            {/* Massive Rotating HUD Rings */}
             <motion.div
-              className="absolute inset-0 bg-amber-500 z-[200]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0, 1] }}
-              transition={{ duration: 1.5, times: [0, 0.8, 1], ease: "easeIn" }}
+              className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+            >
+              <motion.div 
+                className="w-[80vw] md:w-[40vw] h-[80vw] md:h-[40vw] rounded-full border border-amber-500/20 border-t-amber-500/80 border-b-amber-500/80"
+                animate={{ rotate: 360, scale: [0.8, 1.1, 1] }}
+                transition={{ rotate: { duration: 2, ease: "linear", repeat: Infinity }, scale: { duration: 1.5, ease: "easeInOut" } }}
+              />
+              <motion.div 
+                className="absolute w-[90vw] md:w-[45vw] h-[90vw] md:h-[45vw] rounded-full border border-amber-500/10 border-l-amber-500/50 border-r-amber-500/50"
+                animate={{ rotate: -360, scale: [1.2, 0.9, 1] }}
+                transition={{ rotate: { duration: 3, ease: "linear", repeat: Infinity }, scale: { duration: 1.5, ease: "easeInOut" } }}
+              />
+            </motion.div>
+
+            {/* Central Typography Data Block */}
+            <div className="relative z-20 flex flex-col items-center justify-center">
+              {/* Top HUD Data */}
+              <motion.div 
+                className="flex items-center gap-4 text-amber-500 text-xs md:text-sm tracking-[0.5em] uppercase font-mono mb-4"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <span>SYS // OVERRIDE</span>
+                <span className="w-2 h-2 bg-amber-500 animate-pulse shadow-[0_0_10px_rgba(245,158,11,1)]" />
+              </motion.div>
+
+              {/* Glitch/Decrypt Text */}
+              <div className="overflow-hidden relative">
+                <motion.h2 
+                  className="text-6xl sm:text-8xl md:text-[10rem] text-white tracking-tighter font-display drop-shadow-[0_0_30px_rgba(245,158,11,0.5)]" 
+                  initial={{ y: "100%", filter: "blur(10px)" }}
+                  animate={{ y: "0%", filter: "blur(0px)" }}
+                  transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  PROJECTS<span className="text-amber-500">.</span>
+                </motion.h2>
+                
+                {/* Horizontal Scan Line cutting through text */}
+                <motion.div 
+                  className="absolute left-0 right-0 h-[2px] bg-amber-500 shadow-[0_0_20px_rgba(245,158,11,1)] mix-blend-screen"
+                  initial={{ top: "0%" }}
+                  animate={{ top: "100%" }}
+                  transition={{ duration: 1.2, ease: "easeInOut" }}
+                />
+              </div>
+
+              {/* Loading Bar */}
+              <motion.div 
+                className="w-64 h-[1px] bg-white/20 mt-8 relative overflow-hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                <motion.div 
+                  className="absolute top-0 left-0 bottom-0 bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,1)]"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ delay: 0.5, duration: 1.0, ease: "circIn" }}
+                />
+              </motion.div>
+            </div>
+
+            {/* Circular Shockwave Flash to reveal next page */}
+            <motion.div
+              className="absolute inset-0 bg-amber-500 z-[200] origin-center"
+              initial={{ clipPath: "circle(0% at 50% 50%)" }}
+              animate={{ clipPath: "circle(150% at 50% 50%)" }}
+              transition={{ delay: 1.3, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
             />
           </motion.div>
         )}
