@@ -1,10 +1,10 @@
 import { ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValueEvent } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { WordsPullUpMultiStyle } from '../components/WordsPullUpMultiStyle';
 import { AnimatedLetter } from '../components/AnimatedLetter';
 import { Canvas } from '@react-three/fiber';
-import { useState, Suspense, useRef } from 'react';
+import { useState, Suspense, useRef, useEffect } from 'react';
 import { ProjectModel } from '../components/ProjectModel';
 import { Center, Bounds } from '@react-three/drei';
 
@@ -15,9 +15,113 @@ export function Home() {
   const [isDriving, setIsDriving] = useState(false);
 
   const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const framesRef = useRef<HTMLImageElement[]>([]);
+  const [framesLoaded, setFramesLoaded] = useState(false);
+  const currentFrameIndex = useRef(0);
+
+  const FRAME_COUNT = 106;
+
+  // Preload frames
+  useEffect(() => {
+    let loadedCount = 0;
+    const imgs: HTMLImageElement[] = [];
+
+    for (let i = 1; i <= FRAME_COUNT; i++) {
+      const img = new Image();
+      img.src = `/frames/frame_${String(i).padStart(4, "0")}.jpg`;
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === FRAME_COUNT) {
+          setFramesLoaded(true);
+        }
+      };
+      imgs.push(img);
+    }
+    framesRef.current = imgs;
+  }, []);
+
+  // Canvas drawing logic
+  const drawFrame = (index: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    
+    const img = framesRef.current[index];
+    if (!img || !img.complete) return;
+
+    // Handle high DPI displays
+    const dpr = window.devicePixelRatio || 1;
+    const cw = window.innerWidth;
+    const ch = window.innerHeight;
+    
+    canvas.width = cw * dpr;
+    canvas.height = ch * dpr;
+    canvas.style.width = `${cw}px`;
+    canvas.style.height = `${ch}px`;
+    ctx.scale(dpr, dpr);
+
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const canvasRatio = cw / ch;
+
+    let drawW, drawH, drawX, drawY;
+
+    if (canvasRatio > imgRatio) {
+      drawW = cw; drawH = cw / imgRatio;
+    } else {
+      drawH = ch; drawW = ch * imgRatio;
+    }
+
+    // Cover-fit
+    drawX = (cw - drawW) / 2;
+    drawY = (ch - drawH) / 2;
+    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  };
+
+  // Initial draw and resize handler
+  useEffect(() => {
+    if (framesLoaded) {
+      drawFrame(currentFrameIndex.current);
+    }
+    const handleResize = () => {
+      if (framesLoaded) drawFrame(currentFrameIndex.current);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [framesLoaded]);
+
+  const { scrollYProgress, scrollY } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"]
+  });
+
+  const smoothGlobalScroll = useSpring(scrollY, {
+    stiffness: 150, // fast response for canvas
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  // Smooth canvas scrub based on scroll
+  useMotionValueEvent(smoothGlobalScroll, "change", (latest) => {
+    if (framesLoaded && framesRef.current.length > 0) {
+      // Reduced from 1.5 to 0.9 so the animation plays much faster when you start scrolling
+      const maxScroll = typeof window !== 'undefined' ? window.innerHeight * 0.9 : 1000;
+      let progress = Math.min(Math.max(latest / maxScroll, 0), 1);
+      
+      // Optional: Add a slight ease-out curve so it starts fast and slows down
+      progress = Math.pow(progress, 0.85);
+      
+      const frameIndex = Math.min(
+        FRAME_COUNT - 1, 
+        Math.floor(progress * FRAME_COUNT)
+      );
+      
+      if (frameIndex !== currentFrameIndex.current) {
+        currentFrameIndex.current = frameIndex;
+        drawFrame(frameIndex);
+      }
+    }
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -44,35 +148,10 @@ export function Home() {
     e.preventDefault();
     setIsDriving(true);
     
-    // Shoot massive realistic fireworks
-    const duration = 12500;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 150 };
-
-    const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
-
-    const interval: any = setInterval(function() {
-      const timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) {
-        return clearInterval(interval);
-      }
-
-      const particleCount = 50 * (timeLeft / duration);
-      confetti({
-        ...defaults, particleCount,
-        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
-      });
-      confetti({
-        ...defaults, particleCount,
-        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
-      });
-    }, 250);
-
-    // Navigate when animation finishes
+    // Navigate when full 7-second video animation finishes
     setTimeout(() => {
       navigate('/projects');
-    }, 13500);
+    }, 7000);
   };
 
   return (
@@ -82,57 +161,107 @@ export function Home() {
       <AnimatePresence>
         {isDriving && (
           <motion.div 
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex flex-col items-center justify-center overflow-hidden pointer-events-none"
+            className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center overflow-hidden pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            {/* The Road */}
-            <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-white/10 mt-12 md:mt-24 w-full z-0">
-               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/50 to-transparent blur-sm" />
-               <motion.div 
-                 className="absolute inset-0 bg-[linear-gradient(to_right,transparent_50%,#fff_50%)] bg-[length:200px_100%]"
-                 animate={{ backgroundPosition: ['0px 0px', '-200px 0px'] }}
-                 transition={{ duration: 1.0, ease: "linear", repeat: Infinity }}
-               />
-            </div>
-
-            <motion.div 
-              className="w-[200vw] h-[100vh] flex items-center justify-center absolute z-10"
-              initial={{ x: '-100vw' }}
-              animate={{ x: '100vw' }}
-              transition={{ duration: 13, ease: "easeInOut", delay: 0.2 }}
+            {/* Cinematic Circle Reveal Video */}
+            <motion.div
+              className="absolute inset-0 z-0 w-full h-full flex items-center justify-center"
+              initial={{ clipPath: "circle(0% at 50% 50%)" }}
+              animate={{ clipPath: "circle(150% at 50% 50%)" }}
+              transition={{ duration: 2.5, ease: [0.76, 0, 0.24, 1] }}
             >
-              <div className="w-[100vw] h-[100vh]">
-                <Canvas camera={{ position: [0, 2, 8], fov: 45 }}>
-                  <ambientLight intensity={2} />
-                  <directionalLight position={[10, 10, 5]} intensity={3} />
-                  <Suspense fallback={null}>
-                    <Bounds fit clip observe margin={1.2}>
-                      <Center>
-                        <ProjectModel isDrivingMode={true} />
-                      </Center>
-                    </Bounds>
-                  </Suspense>
-                </Canvas>
+              <motion.video
+                src="/frames/kling_20260421_作品_Cinematic__4368_0.mp4"
+                autoPlay
+                muted
+                playsInline
+                initial={{ scale: 1.5, filter: "blur(20px)" }}
+                animate={{ scale: 1.05, filter: "blur(0px)" }}
+                transition={{ duration: 7, ease: "easeOut" }}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              {/* Vignette & Gradient Overlay */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80 z-10" />
+            </motion.div>
+            
+            {/* Sleek Masked Typography */}
+            <motion.div 
+              className="relative z-10 flex flex-col items-center justify-center w-full"
+            >
+              <div className="overflow-hidden pb-4">
+                <motion.h2 
+                  className="text-7xl sm:text-8xl md:text-[10rem] text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/30 tracking-tighter font-normal drop-shadow-[0_0_40px_rgba(255,255,255,0.4)]" 
+                  style={{ fontFamily: "'Instrument Serif', serif" }}
+                  initial={{ y: "120%", rotate: 2 }}
+                  animate={{ y: "0%", rotate: 0 }}
+                  transition={{ delay: 0.6, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  PROJECTS
+                </motion.h2>
+              </div>
+              
+              <motion.div 
+                className="flex items-center gap-4 text-white/60 text-xs md:text-sm tracking-[0.4em] uppercase font-mono mt-4"
+                initial={{ opacity: 0, filter: "blur(10px)", y: 10 }}
+                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                transition={{ delay: 1.2, duration: 1, ease: "easeOut" }}
+              >
+                <span>Initialization</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+                <span>Sequence Active</span>
+              </motion.div>
+            </motion.div>
+            
+            {/* Cinematic top/bottom bars with Progress Line */}
+            <motion.div 
+              className="absolute top-0 left-0 right-0 h-[12vh] bg-black z-20"
+              initial={{ y: "-100%" }}
+              animate={{ y: "0%" }}
+              transition={{ delay: 0.2, duration: 1.5, ease: [0.76, 0, 0.24, 1] }}
+            />
+            <motion.div 
+              className="absolute bottom-0 left-0 right-0 h-[12vh] bg-black z-20 flex flex-col justify-center px-8 md:px-16"
+              initial={{ y: "100%" }}
+              animate={{ y: "0%" }}
+              transition={{ delay: 0.2, duration: 1.5, ease: [0.76, 0, 0.24, 1] }}
+            >
+              <div className="flex justify-between text-[10px] text-white/40 font-mono tracking-widest uppercase mb-3">
+                <span>Loading Core</span>
+                <span>7.04s</span>
+              </div>
+              <div className="w-full h-[2px] bg-white/10 relative overflow-hidden rounded-full">
+                <motion.div 
+                  className="absolute top-0 left-0 bottom-0 bg-white shadow-[0_0_15px_rgba(255,255,255,1)]"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 7, ease: "linear" }}
+                />
               </div>
             </motion.div>
+
+            {/* Seamless Flash Transition to Next Page */}
+            <motion.div
+              className="absolute inset-0 bg-white z-[200]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0, 1] }}
+              transition={{ duration: 7, times: [0, 0.95, 1], ease: "easeIn" }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* SECTION 1: HERO */}
       <section className="relative h-screen w-full overflow-hidden bg-black z-20">
-        {/* Background video */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        >
-          <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4" type="video/mp4" />
-        </video>
+        {/* Background Canvas - perfect 0-lag scroll */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 z-0 pointer-events-none"
+        />
         
         {/* Navigation Bar */}
         <nav className="relative z-10 flex flex-row justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
