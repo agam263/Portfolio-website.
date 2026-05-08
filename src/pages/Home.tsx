@@ -9,6 +9,7 @@ export function Home() {
   const navigate = useNavigate();
   const [isDriving, setIsDriving] = useState(false);
 
+  const heroRef = useRef<HTMLElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const framesRef = useRef<HTMLImageElement[]>([]);
@@ -91,25 +92,23 @@ export function Home() {
     offset: ["start start", "end end"]
   });
 
-  const smoothGlobalScroll = useSpring(scrollY, {
-    stiffness: 150, // fast response for canvas
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+
+  const smoothHeroProgress = useSpring(heroProgress, {
+    stiffness: 150,
     damping: 30,
     restDelta: 0.001
   });
 
-  // Smooth canvas scrub based on scroll
-  useMotionValueEvent(smoothGlobalScroll, "change", (latest) => {
+  // Smooth canvas scrub based on hero progress
+  useMotionValueEvent(smoothHeroProgress, "change", (latest) => {
     if (framesLoaded && framesRef.current.length > 0) {
-      // Reduced from 1.5 to 0.9 so the animation plays much faster when you start scrolling
-      const maxScroll = typeof window !== 'undefined' ? window.innerHeight * 0.9 : 1000;
-      let progress = Math.min(Math.max(latest / maxScroll, 0), 1);
-      
-      // Optional: Add a slight ease-out curve so it starts fast and slows down
-      progress = Math.pow(progress, 0.85);
-      
       const frameIndex = Math.min(
         FRAME_COUNT - 1, 
-        Math.floor(progress * FRAME_COUNT)
+        Math.floor(latest * FRAME_COUNT)
       );
       
       if (frameIndex !== currentFrameIndex.current) {
@@ -118,6 +117,16 @@ export function Home() {
       }
     }
   });
+
+  // Hero Text Overlays based on hero scroll
+  const titleOpacity = useTransform(smoothHeroProgress, [0, 0.15], [1, 0]);
+  const titleY = useTransform(smoothHeroProgress, [0, 0.15], [0, -50]);
+
+  const quoteOpacity = useTransform(smoothHeroProgress, [0.2, 0.3, 0.5, 0.6], [0, 1, 1, 0]);
+  const quoteY = useTransform(smoothHeroProgress, [0.2, 0.3, 0.5, 0.6], [50, 0, 0, -50]);
+
+  const buildOpacity = useTransform(smoothHeroProgress, [0.55, 0.65, 0.85, 0.95], [0, 1, 1, 0]);
+  const buildY = useTransform(smoothHeroProgress, [0.55, 0.65], [50, 0]);
 
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -250,71 +259,110 @@ export function Home() {
         )}
       </AnimatePresence>
 
-      {/* SECTION 1: HERO */}
-      <section className="relative h-screen w-full overflow-hidden bg-black z-20">
-        {/* Background Canvas - perfect 0-lag scroll */}
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 z-0 pointer-events-none"
-        />
-        
-        {/* Navigation Bar */}
-        <nav className="relative z-10 flex flex-row justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
-          <div className="text-2xl md:text-3xl tracking-tight text-foreground" style={{ fontFamily: "'Instrument Serif', serif" }}>
-            Agam<sup className="text-xs">*</sup>
-          </div>
-          <div className="flex items-center gap-4 md:gap-8">
-            <Link to="#" className="text-xs md:text-sm transition-colors text-foreground">
-              About
-            </Link>
-            <Link to="/connect" className="text-xs md:text-sm transition-colors text-muted-foreground hover:text-foreground">
-              Contact
-            </Link>
-          </div>
-          <Link to="/journey" className="liquid-glass rounded-full px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm text-foreground hover:scale-[1.03] transition-transform hidden sm:inline-flex items-center">
-            My Journey
-          </Link>
-        </nav>
-
-        {/* Hero Content */}
-        <div className="relative z-10 flex flex-col justify-center items-start w-full px-6 md:px-12 lg:px-24 h-[calc(100vh-100px)]">
-          <h1 
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-[-1.5px] max-w-5xl font-normal text-foreground flex flex-col gap-2" 
-            style={{ fontFamily: "'Instrument Serif', serif" }}
-          >
-            <div>
-              Hi, I'm{" "}
-              <motion.span
-                className="inline-block relative text-white"
-                initial={{ clipPath: "inset(-50% 100% -50% -10%)" }}
-                animate={{ 
-                  clipPath: "inset(-50% -50% -50% -10%)",
-                  textShadow: ["0px 0px 0px rgba(255,255,255,0)", "0px 0px 0px rgba(255,255,255,0)", "0px 0px 25px rgba(255,255,255,0.8)", "0px 0px 0px rgba(255,255,255,0)"]
-                }}
-                transition={{
-                  clipPath: { duration: 0.8, ease: "easeInOut" },
-                  textShadow: { duration: 2, times: [0, 0.4, 0.7, 1], ease: "easeInOut" }
-                }}
-              >
-                Agam
-              </motion.span>
-            </div>
-          </h1>
+      {/* SECTION 1: HERO (Scroll-Linked sticky section) */}
+      <section ref={heroRef} className="relative h-[300vh] w-full bg-black z-20">
+        <div className="sticky top-0 h-screen w-full overflow-hidden">
+          {/* Background Canvas - perfect 0-lag scroll */}
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 z-0 pointer-events-none"
+          />
           
-          {/* Aligned left, slightly below text */}
-          <motion.div 
-            className="mt-12"
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, delay: 1.6, ease: "easeOut" }}
-          >
-            <Link 
-              to="/journey" 
-              className="liquid-glass rounded-full px-12 py-4 text-base text-foreground inline-flex items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.15)]"
-            >
-              My Journey
+          {/* Cinematic Overlay Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 z-0" />
+          
+          {/* Top Navbar */}
+          <nav className="relative z-10 flex flex-row justify-between items-center px-6 md:px-12 py-8 max-w-[1400px] mx-auto w-full">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-amber-500" />
+              <div className="text-xs md:text-sm tracking-[0.3em] text-white/80 uppercase font-mono">
+                Agam <span className="text-white/40">/ Portfolio</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-8 text-xs tracking-[0.2em] text-white/50 uppercase font-mono">
+              <Link to="#" className="hover:text-white transition-colors">Systems</Link>
+              <Link to="/connect" className="hover:text-white transition-colors">Archive</Link>
+            </div>
+            
+            <Link to="/journey" className="border border-white/20 rounded-full px-6 py-2 text-xs text-white/80 hover:bg-white/10 transition-colors uppercase tracking-widest font-mono hidden sm:flex items-center gap-2">
+              Engage <ArrowRight className="w-3 h-3" />
             </Link>
+          </nav>
+
+          {/* Cinematic HUD Elements (Static) */}
+          <div className="absolute top-32 left-8 md:left-12 flex flex-col gap-2 z-10 hidden sm:block">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 border-t border-l border-amber-500/50" />
+              <span className="text-[10px] tracking-[0.4em] text-white/40 font-mono uppercase">Telemetry Link - Live</span>
+            </div>
+          </div>
+          <div className="absolute top-32 right-8 md:right-12 flex flex-col items-end gap-2 z-10 hidden sm:block">
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] tracking-[0.4em] text-white/40 font-mono uppercase">Core Status 93.0%</span>
+              <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              <div className="w-3 h-3 border-t border-r border-amber-500/50" />
+            </div>
+          </div>
+          <div className="absolute bottom-12 left-8 md:left-12 flex items-end gap-3 z-10 hidden sm:flex">
+            <div className="w-3 h-3 border-b border-l border-amber-500/50" />
+            <span className="text-[10px] tracking-[0.4em] text-white/20 font-mono uppercase">SEQ 001 / 169</span>
+          </div>
+          <div className="absolute bottom-12 right-8 md:right-12 flex items-end justify-end gap-3 z-10 hidden sm:flex">
+            <span className="text-[10px] tracking-[0.4em] text-white/20 font-mono uppercase">System // Diagnostic</span>
+            <div className="w-3 h-3 border-b border-r border-amber-500/50" />
+          </div>
+
+          {/* SCROLL-LINKED TEXT OVERLAYS */}
+          
+          {/* Phase 1: Initial Greeting */}
+          <motion.div 
+            className="absolute inset-0 flex flex-col justify-center px-6 md:px-16 lg:px-32 z-10 pointer-events-none"
+            style={{ opacity: titleOpacity, y: titleY }}
+          >
+            <h1 
+              className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl leading-[1] tracking-[-2px] font-normal text-white drop-shadow-2xl mix-blend-overlay" 
+              style={{ fontFamily: "'Instrument Serif', serif" }}
+            >
+              Hi, I'm <br/>
+              <span className="italic">Agam.</span>
+            </h1>
+            <p className="text-sm md:text-base text-white/60 tracking-[0.4em] font-mono mt-8 uppercase max-w-md border-l border-white/20 pl-6">
+              Engineering Interfaces & Products.
+            </p>
           </motion.div>
+
+          {/* Phase 2: Floating Cinematic Quote */}
+          <motion.div 
+            className="absolute right-6 md:right-24 top-1/2 -translate-y-1/2 z-10 max-w-sm"
+            style={{ opacity: quoteOpacity, y: quoteY }}
+          >
+            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
+              <p className="text-xl md:text-2xl text-white font-light leading-snug">
+                "Sometimes you gotta run before you can walk."
+              </p>
+              <div className="flex justify-between items-center mt-8">
+                <span className="text-white/60 text-sm">Tony Stark</span>
+                <span className="text-amber-500/80 text-[10px] tracking-widest font-mono uppercase">Iron Man - 2008</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Phase 3: Massive Action Text */}
+          <motion.div 
+            className="absolute inset-0 flex flex-col justify-center px-6 md:px-16 lg:px-32 z-10 pointer-events-none"
+            style={{ opacity: buildOpacity, y: buildY }}
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+              <span className="text-[10px] tracking-[0.4em] text-white/60 font-mono uppercase">Protocol - MK LXXXV</span>
+            </div>
+            <h2 className="text-6xl sm:text-8xl md:text-[8rem] leading-[0.9] tracking-tighter text-white font-bold drop-shadow-2xl">
+              Build<br/>
+              <span className="text-amber-500">with Agam</span>
+            </h2>
+          </motion.div>
+
         </div>
       </section>
 
