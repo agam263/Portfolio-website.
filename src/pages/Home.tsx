@@ -271,22 +271,21 @@ export function Home() {
           {/* Cinematic Overlay Gradient */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 z-0" />
           
-          {/* Top Navbar */}
-          <nav className="relative z-10 flex flex-row justify-between items-center px-6 md:px-12 py-8 max-w-[1400px] mx-auto w-full">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-amber-500" />
-              <div className="text-xs md:text-sm tracking-[0.3em] text-white/80 uppercase font-mono">
-                Agam <span className="text-white/40">/ Portfolio</span>
-              </div>
+          {/* Navigation Bar */}
+          <nav className="relative z-10 flex flex-row justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto w-full pointer-events-auto">
+            <div className="text-2xl md:text-3xl tracking-tight text-white" style={{ fontFamily: "'Instrument Serif', serif" }}>
+              Agam<sup className="text-xs text-white/60">*</sup>
             </div>
-            
-            <div className="flex items-center gap-8 text-xs tracking-[0.2em] text-white/50 uppercase font-mono">
-              <Link to="#" className="hover:text-white transition-colors">Systems</Link>
-              <Link to="/connect" className="hover:text-white transition-colors">Archive</Link>
+            <div className="flex items-center gap-4 md:gap-8">
+              <Link to="#" className="text-xs md:text-sm transition-colors text-white hover:text-white/80">
+                About
+              </Link>
+              <Link to="/connect" className="text-xs md:text-sm transition-colors text-white/60 hover:text-white">
+                Contact
+              </Link>
             </div>
-            
-            <Link to="/journey" className="border border-white/20 rounded-full px-6 py-2 text-xs text-white/80 hover:bg-white/10 transition-colors uppercase tracking-widest font-mono hidden sm:flex items-center gap-2">
-              Engage <ArrowRight className="w-3 h-3" />
+            <Link to="/journey" className="liquid-glass rounded-full px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm text-white hover:scale-[1.03] transition-transform hidden sm:inline-flex items-center">
+              My Journey
             </Link>
           </nav>
 
