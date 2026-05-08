@@ -1,50 +1,53 @@
 import { motion } from 'framer-motion';
 import { ArrowLeft, Code2, Database, BrainCircuit, Wrench } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { FaJava, FaPython, FaReact, FaNodeJs, FaHtml5, FaChartBar, FaCogs, FaBrain, FaGoogle, FaGithub, FaServer } from 'react-icons/fa';
+import { FaGolang } from 'react-icons/fa6';
+import { SiJavascript, SiExpress, SiTailwindcss, SiNumpy, SiPandas, SiFirebase, SiMongodb, SiVisualstudiocode } from 'react-icons/si';
 
 const SKILL_CATEGORIES = [
   {
     title: "Languages",
     icon: <Code2 className="w-6 h-6" />,
     skills: [
-      { name: "Java", level: "Advanced" },
-      { name: "JavaScript", level: "Advanced" },
-      { name: "Python", level: "Intermediate" },
-      { name: "Go", level: "Basic" }
+      { name: "Java", level: "Advanced", techIcon: <FaJava /> },
+      { name: "JavaScript", level: "Advanced", techIcon: <SiJavascript /> },
+      { name: "Python", level: "Intermediate", techIcon: <FaPython /> },
+      { name: "Go", level: "Basic", techIcon: <FaGolang /> }
     ]
   },
   {
     title: "Web Stack",
     icon: <Database className="w-6 h-6" />,
     skills: [
-      { name: "HTML & CSS", level: "Advanced" },
-      { name: "React.js", level: "Advanced" },
-      { name: "Node.js", level: "Intermediate" },
-      { name: "Express.js", level: "Intermediate" },
-      { name: "Tailwind CSS", level: "Advanced" }
+      { name: "HTML & CSS", level: "Advanced", techIcon: <FaHtml5 /> },
+      { name: "React.js", level: "Advanced", techIcon: <FaReact /> },
+      { name: "Node.js", level: "Intermediate", techIcon: <FaNodeJs /> },
+      { name: "Express.js", level: "Intermediate", techIcon: <SiExpress /> },
+      { name: "Tailwind CSS", level: "Advanced", techIcon: <SiTailwindcss /> }
     ]
   },
   {
     title: "Data & ML",
     icon: <BrainCircuit className="w-6 h-6" />,
     skills: [
-      { name: "NumPy", level: "Intermediate" },
-      { name: "Pandas", level: "Intermediate" },
-      { name: "Data Analysis", level: "Advanced" },
-      { name: "Feature Engineering", level: "Intermediate" },
-      { name: "Model Evaluation", level: "Intermediate" }
+      { name: "NumPy", level: "Intermediate", techIcon: <SiNumpy /> },
+      { name: "Pandas", level: "Intermediate", techIcon: <SiPandas /> },
+      { name: "Data Analysis", level: "Advanced", techIcon: <FaChartBar /> },
+      { name: "Feature Engineering", level: "Intermediate", techIcon: <FaCogs /> },
+      { name: "Model Evaluation", level: "Intermediate", techIcon: <FaBrain /> }
     ]
   },
   {
     title: "Tools & Technologies",
     icon: <Wrench className="w-6 h-6" />,
     skills: [
-      { name: "Firebase", level: "Intermediate" },
-      { name: "MongoDB", level: "Intermediate" },
-      { name: "Google OAuth", level: "Basic" },
-      { name: "Git & GitHub", level: "Advanced" },
-      { name: "REST APIs", level: "Advanced" },
-      { name: "VS Code", level: "Advanced" }
+      { name: "Firebase", level: "Intermediate", techIcon: <SiFirebase /> },
+      { name: "MongoDB", level: "Intermediate", techIcon: <SiMongodb /> },
+      { name: "Google OAuth", level: "Basic", techIcon: <FaGoogle /> },
+      { name: "Git & GitHub", level: "Advanced", techIcon: <FaGithub /> },
+      { name: "REST APIs", level: "Advanced", techIcon: <FaServer /> },
+      { name: "VS Code", level: "Advanced", techIcon: <SiVisualstudiocode /> }
     ]
   }
 ];
@@ -152,7 +155,14 @@ export function Skills() {
                 {category.skills.map((skill, i) => (
                   <div key={i} className="flex flex-col gap-3">
                     <div className="flex justify-between items-end">
-                      <span className="text-white/80 font-mono text-sm tracking-widest uppercase group-hover:text-white transition-colors">{skill.name}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-white/30 group-hover:text-amber-500 transition-colors text-lg">
+                          {skill.techIcon}
+                        </span>
+                        <span className="text-white/80 font-mono text-sm tracking-widest uppercase group-hover:text-white transition-colors">
+                          {skill.name}
+                        </span>
+                      </div>
                       <span className="text-amber-500/60 text-[10px] tracking-[0.3em] uppercase font-mono">{skill.level}</span>
                     </div>
                     {/* Tech Progress Line */}
